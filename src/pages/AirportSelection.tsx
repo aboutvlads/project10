@@ -7,55 +7,10 @@ import DealCard from '../components/DealCard';
 import { dealsByRegion } from '../data/deals';
 import { useNavigate } from 'react-router-dom';
 
-interface DealData {
-  id: string;
-  city: string;
-  country: string;
-  flag: string;
-  image: string;
-  price: number;
-  originalPrice: number;
-  from: string;
-  tripType: string;
-  likes: number;
-  isHot: boolean;
-  type: string;
-  postedBy: string;
-  postedByAvatar: string;
-  postedByDescription: string;
-  url: string;
-  created_at: string;
-  isPastDeal?: boolean;
-  isBusinessClass?: boolean;
-}
-
 export default function AirportSelection() {
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState('Europe');
   const deals = dealsByRegion[selectedRegion] || dealsByRegion.Europe;
-
-  // Transform deals data to match DealCard props
-  const transformedDeals: DealData[] = deals.map((deal, index) => ({
-    id: String(index),
-    city: deal.city,
-    country: deal.country,
-    flag: '🇫🇷', // You should map this based on country
-    image: deal.image,
-    price: deal.price,
-    originalPrice: deal.originalPrice,
-    from: deal.from,
-    tripType: deal.tripType,
-    likes: Math.floor(Math.random() * 100) + 20, // Example random likes
-    isHot: Math.random() > 0.7,
-    type: 'Economy',
-    postedBy: 'TripWingz Team',
-    postedByAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=tripwingz',
-    postedByDescription: 'Finding the best deals for you',
-    url: '#',
-    created_at: new Date().toISOString(),
-    isPastDeal: deal.isPastDeal,
-    isBusinessClass: deal.isBusinessClass
-  }));
 
   return (
     <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-white">
@@ -78,8 +33,8 @@ export default function AirportSelection() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-10">
-            {transformedDeals.map((deal) => (
-              <DealCard key={deal.id} {...deal} />
+            {deals.map((deal, index) => (
+              <DealCard key={index} {...deal} />
             ))}
           </div>
 

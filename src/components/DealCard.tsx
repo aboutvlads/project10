@@ -4,15 +4,15 @@ import { getRelativeTime } from '../utils/timeUtils';
 
 interface DealCardProps {
   id: string;
-  city: string;
+  destination: string;
   country: string;
   flag: string;
   image: string;
   price: number;
   originalPrice: number;
   discount: number;
-  from: string;
-  tripType: string;
+  departure: string;
+  stops: string;
   tags: string[];
   likes: number;
   isHot: boolean;
@@ -31,15 +31,15 @@ interface DealCardProps {
 
 export default function DealCard({
   id,
-  city,
+  destination,
   country,
   flag,
   image,
   price,
   originalPrice,
   discount,
-  from,
-  tripType,
+  departure,
+  stops,
   tags,
   likes,
   isHot,
@@ -65,7 +65,7 @@ export default function DealCard({
       <div className="relative">
         <img
           src={image}
-          alt={`${city}, ${country}`}
+          alt={`${destination}, ${country}`}
           className="w-full h-48 object-cover"
         />
         {isPastDeal && (
@@ -98,18 +98,18 @@ export default function DealCard({
             <div className="flex flex-col">
               <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
                 <h3 className="text-sm sm:text-lg font-semibold truncate">
-                  {city}, {country} {flag}
+                  {destination}, {country} {flag}
                 </h3>
               </div>
               <div className="flex flex-col text-xs sm:text-sm text-gray-600">
                 <span className="flex items-center">
                   <span className="font-medium">From:</span>
-                  <span className="ml-1">{from}</span>
+                  <span className="ml-1">{departure}</span>
                 </span>
-                {tripType && (
+                {stops && (
                   <span className="mt-0.5 flex items-center">
-                    <span className="font-medium">Trip:</span>
-                    <span className="ml-1">{tripType}</span>
+                    <span className="font-medium">Stops:</span>
+                    <span className="ml-1">{stops}</span>
                   </span>
                 )}
               </div>
