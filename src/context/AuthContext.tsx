@@ -45,10 +45,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (error) throw error;
         
         setUser(session?.user ?? null);
+        
+        // If we have a session, fetch the user profile
+        if (session?.user) {
+          const { data: profile, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+            
+          if (!profileError) {
+            setUserProfile(profile);
+            
+            // Handle redirection for authenticated users
+            const currentPath = location.pathname;
+            const publicPaths = ['/', '/signin', '/auth/callback'];
+            
+            if (publicPaths.includes(currentPath)) {
+              if (profile?.onboarding_completed) {
+                navigate('/dashboard', { replace: true });
+              } else {
+                navigate('/onboarding', { replace: true });
+              }
+            }
+          }
+        }
       } catch (error) {
         console.error('Error checking session:', error);
       } finally {
         setSessionChecked(true);
+        setIsLoading(false);
       }
     };
 
@@ -58,52 +84,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event);
       setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+          
+        setUserProfile(profile);
+        
+        // Handle redirection on auth state change
+        const currentPath = location.pathname;
+        const publicPaths = ['/', '/signin', '/auth/callback'];
+        
+        if (publicPaths.includes(currentPath)) {
+          if (profile?.onboarding_completed) {
+            navigate('/dashboard', { replace: true });
+          } else {
+            navigate('/onboarding', { replace: true });
+          }
+        }
+      } else {
+        setUserProfile(null);
+      }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
-
-  // Fetch user profile whenever user changes
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (!user || !sessionChecked) {
-        setUserProfile(null);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        setUserProfile(data);
-
-        // Redirect authenticated users to dashboard from auth-related pages
-        const authPaths = ['/', '/auth/callback', '/signin'];
-        const currentPath = location.pathname;
-        if (authPaths.includes(currentPath)) {
-          if (data?.onboarding_completed) {
-            navigate('/dashboard');
-          } else {
-            navigate('/onboarding');
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, [user, sessionChecked, navigate, location]);
+  }, [navigate, location.pathname]);
 
   const signInWithGoogle = async () => {
     try {
