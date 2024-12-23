@@ -140,20 +140,20 @@ export default function Preferences() {
 
       <Card className="w-full max-w-4xl !max-w-4xl">
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6">
             {destinations.map((destination) => (
               <div
                 key={destination.id}
                 onClick={() => handleDestinationToggle(destination.id)}
                 className={`
-                  relative rounded-xl overflow-hidden cursor-pointer group transition-transform duration-300 hover:scale-[1.02]
+                  relative rounded-lg sm:rounded-xl overflow-hidden cursor-pointer group transition-transform duration-300 hover:scale-[1.02]
                   ${selectedDestinations.includes(destination.id)
-                    ? 'ring-4 ring-[#1B1B1B] shadow-xl'
+                    ? 'ring-2 sm:ring-4 ring-[#1B1B1B] shadow-md sm:shadow-xl'
                     : 'hover:ring-2 hover:ring-[#1B1B1B] hover:shadow-lg'
                   }
                 `}
               >
-                <div className="relative pb-[133%]">
+                <div className="relative pb-[100%] sm:pb-[133%]">
                   <img
                     src={destination.image}
                     alt={destination.name}
@@ -168,11 +168,11 @@ export default function Preferences() {
                       }
                     `}
                   />
-                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
-                    <div className="space-y-2">
-                      <h3 className="text-white font-bold text-lg sm:text-xl">{destination.name}</h3>
-                      <p className="text-white text-xs sm:text-sm font-medium opacity-90">{destination.description}</p>
-                      <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs backdrop-blur-sm">
+                  <div className="absolute inset-0 p-2 sm:p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
+                    <div className="space-y-1 sm:space-y-2">
+                      <h3 className="text-white font-bold text-sm sm:text-xl leading-tight">{destination.name}</h3>
+                      <p className="text-white text-xs sm:text-sm font-medium opacity-90 line-clamp-2 sm:line-clamp-none">{destination.description}</p>
+                      <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/20 text-white text-[10px] sm:text-xs backdrop-blur-sm">
                         {destination.region}
                       </span>
                     </div>
