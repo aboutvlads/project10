@@ -55,18 +55,11 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/')}
-            className="w-full sm:w-auto"
-          >
-            Back
-          </Button>
+        <div className="flex justify-center mt-8">
           <Button
             variant="secondary"
             onClick={() => navigate('/airport-selection')}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto max-w-xs"
           >
             Continue <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
