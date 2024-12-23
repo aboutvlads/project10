@@ -140,7 +140,7 @@ export default function Preferences() {
 
       <Card className="w-full max-w-4xl !max-w-4xl">
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {destinations.map((destination) => (
               <div
                 key={destination.id}
@@ -153,11 +153,11 @@ export default function Preferences() {
                   }
                 `}
               >
-                <div className="aspect-w-3 aspect-h-4">
+                <div className="relative pb-[133%]">
                   <img
                     src={destination.image}
                     alt={destination.name}
-                    className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />
                   <div 
                     className={`
@@ -168,10 +168,10 @@ export default function Preferences() {
                       }
                     `}
                   />
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
                     <div className="space-y-2">
-                      <h3 className="text-white font-bold text-xl">{destination.name}</h3>
-                      <p className="text-white text-sm font-medium opacity-90">{destination.description}</p>
+                      <h3 className="text-white font-bold text-lg sm:text-xl">{destination.name}</h3>
+                      <p className="text-white text-xs sm:text-sm font-medium opacity-90">{destination.description}</p>
                       <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs backdrop-blur-sm">
                         {destination.region}
                       </span>
