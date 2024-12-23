@@ -50,22 +50,28 @@ export default function AuthCallback() {
               console.error('Error creating profile:', insertError);
               throw insertError;
             }
-          }
-
-          if (profile?.onboarding_completed) {
-            console.log('Onboarding completed, redirecting to dashboard');
-            navigate('/dashboard');
-          } else {
+            
             console.log('Redirecting to onboarding');
-            navigate('/onboarding');
+            navigate('/onboarding', { replace: true });
+          } else {
+            console.log('Profile exists, checking onboarding status');
+            console.log('Onboarding completed:', profile.onboarding_completed);
+            
+            if (profile.onboarding_completed) {
+              console.log('Onboarding completed, redirecting to dashboard');
+              navigate('/dashboard', { replace: true });
+            } else {
+              console.log('Onboarding not completed, redirecting to onboarding');
+              navigate('/onboarding', { replace: true });
+            }
           }
         } else {
           console.log('No session found, redirecting to home');
-          navigate('/');
+          navigate('/', { replace: true });
         }
       } catch (error) {
         console.error('Error in auth callback:', error);
-        navigate('/');
+        navigate('/', { replace: true });
       }
     };
 

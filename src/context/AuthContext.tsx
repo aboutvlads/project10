@@ -39,11 +39,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Check and set initial session
   useEffect(() => {
+    let mounted = true;
+    
     const checkSession = async () => {
       try {
+        setIsLoading(true);
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
         
+        if (!mounted) return;
         setUser(session?.user ?? null);
         
         // If we have a session, fetch the user profile
@@ -54,17 +58,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             .eq('id', session.user.id)
             .single();
             
+          if (!mounted) return;
+          
           if (!profileError) {
             setUserProfile(profile);
+            console.log('User profile:', profile);
             
             // Handle redirection for authenticated users
             const currentPath = location.pathname;
             const publicPaths = ['/', '/signin', '/auth/callback'];
             
-            if (publicPaths.includes(currentPath)) {
-              if (profile?.onboarding_completed) {
+            if (profile && (publicPaths.includes(currentPath) || currentPath === '/onboarding')) {
+              console.log('Checking redirection. Onboarding completed:', profile.onboarding_completed);
+              if (profile.onboarding_completed) {
+                console.log('Redirecting to dashboard');
                 navigate('/dashboard', { replace: true });
-              } else {
+              } else if (!publicPaths.includes(currentPath)) {
+                console.log('Redirecting to onboarding');
                 navigate('/onboarding', { replace: true });
               }
             }
@@ -73,8 +83,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (error) {
         console.error('Error checking session:', error);
       } finally {
-        setSessionChecked(true);
-        setIsLoading(false);
+        if (mounted) {
+          setSessionChecked(true);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -83,6 +95,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event);
+      if (!mounted) return;
+      
       setUser(session?.user ?? null);
       
       if (session?.user) {
@@ -92,17 +106,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .eq('id', session.user.id)
           .single();
           
+        if (!mounted) return;
         setUserProfile(profile);
         
-        // Handle redirection on auth state change
-        const currentPath = location.pathname;
-        const publicPaths = ['/', '/signin', '/auth/callback'];
-        
-        if (publicPaths.includes(currentPath)) {
-          if (profile?.onboarding_completed) {
-            navigate('/dashboard', { replace: true });
-          } else {
-            navigate('/onboarding', { replace: true });
+        if (profile) {
+          // Handle redirection on auth state change
+          const currentPath = location.pathname;
+          const publicPaths = ['/', '/signin', '/auth/callback'];
+          
+          if (profile && (publicPaths.includes(currentPath) || currentPath === '/onboarding')) {
+            console.log('Auth change redirection check. Onboarding completed:', profile.onboarding_completed);
+            if (profile.onboarding_completed) {
+              console.log('Redirecting to dashboard');
+              navigate('/dashboard', { replace: true });
+            } else if (!publicPaths.includes(currentPath)) {
+              console.log('Redirecting to onboarding');
+              navigate('/onboarding', { replace: true });
+            }
           }
         }
       } else {
@@ -111,6 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [navigate, location.pathname]);
