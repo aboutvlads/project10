@@ -36,6 +36,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Initialize: get current session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        // Fetch user profile
+        supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            setUserProfile(data);
+            if (data?.onboarding_completed) {
+              navigate('/dashboard');
+            }
+          });
+      }
       setIsLoading(false);
     });
 
@@ -47,23 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (event === 'SIGNED_OUT') {
         setUserProfile(null);
         navigate('/');
-      } else if (event === 'SIGNED_IN') {
-        // Fetch user profile after sign in
-        if (session?.user) {
-          const { data } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-            
-          setUserProfile(data);
-          
-          if (data?.onboarding_completed) {
-            navigate('/dashboard');
-          } else {
-            navigate('/onboarding');
-          }
-        }
       }
     });
 
@@ -103,7 +100,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/auth/callback'
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
       }
     });
     if (error) throw error;

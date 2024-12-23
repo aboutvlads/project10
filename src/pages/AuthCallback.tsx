@@ -32,6 +32,7 @@ export default function AuthCallback() {
             throw profileError;
           }
 
+          // Create profile if it doesn't exist
           if (!profile) {
             console.log('Creating new user profile');
             const { error: insertError } = await supabase
@@ -42,17 +43,25 @@ export default function AuthCallback() {
                   email: session.user.email,
                   created_at: new Date().toISOString(),
                   updated_at: new Date().toISOString(),
-                  onboarding_completed: false
+                  onboarding_completed: true // Set to true by default for now
                 }
-              ]);
+              ])
+              .select()
+              .single();
 
             if (insertError) {
               console.error('Error creating profile:', insertError);
               throw insertError;
             }
+
+            // Redirect to dashboard for new users
+            console.log('New user, redirecting to dashboard');
+            navigate('/dashboard');
+            return;
           }
 
-          if (profile?.onboarding_completed) {
+          // For existing users, check onboarding status
+          if (profile.onboarding_completed) {
             console.log('Onboarding completed, redirecting to dashboard');
             navigate('/dashboard');
           } else {
