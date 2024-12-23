@@ -31,24 +31,14 @@ interface Deal {
 export default function DealPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { supabase, isLoading: authLoading } = useAuth();
+  const { supabase } = useAuth();
   const [deal, setDeal] = useState<Deal | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    
     const fetchDeal = async () => {
       try {
-        if (!id) {
-          setError('Deal ID not found');
-          return;
-        }
-
-        // Wait for auth to be ready
-        if (authLoading) return;
-
+        if (!id) return;
         const { data, error } = await supabase
           .from('deals')
           .select('*')
@@ -56,60 +46,18 @@ export default function DealPage() {
           .single();
 
         if (error) throw error;
-        
-        if (!data) {
-          setError('Deal not found');
-          return;
-        }
-
-        if (mounted) {
-          setDeal(data);
-          setError(null);
-        }
+        setDeal(data);
       } catch (error) {
         console.error('Error fetching deal:', error);
-        if (mounted) {
-          setError(error instanceof Error ? error.message : 'Failed to load deal');
-        }
       } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchDeal();
+  }, [id, supabase]);
 
-    return () => {
-      mounted = false;
-    };
-  }, [id, supabase, authLoading]);
-
-  if (loading || authLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
-          <p className="text-gray-600">Loading deal...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-        <div className="text-center mb-6">
-          <div className="text-red-600 mb-4">{error}</div>
-          <Button onClick={() => navigate('/dashboard')} variant="secondary">
-            Return to Dashboard
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!deal) {
+  if (loading || !deal) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
