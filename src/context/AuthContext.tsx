@@ -32,7 +32,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,53 +52,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const handleAuthStateChange = async (session: any) => {
-    setUser(session?.user ?? null);
-    
-    if (session?.user) {
-      const profile = await fetchUserProfile(session.user.id);
-      setUserProfile(profile);
+  const handleRedirect = (profile: UserProfile | null) => {
+    const publicPaths = ['/', '/signin', '/auth/callback'];
+    const currentPath = location.pathname;
 
-      // Handle redirections
-      const publicPaths = ['/', '/signin', '/auth/callback'];
-      if (publicPaths.includes(location.pathname)) {
-        if (profile?.onboarding_completed) {
-          navigate('/dashboard', { replace: true });
-        } else {
-          navigate('/onboarding', { replace: true });
-        }
-      }
-    } else {
-      setUserProfile(null);
-      if (!publicPaths.includes(location.pathname)) {
-        navigate('/', { replace: true });
+    if (publicPaths.includes(currentPath)) {
+      if (profile?.onboarding_completed) {
+        navigate('/dashboard', { replace: true });
+      } else {
+        navigate('/onboarding', { replace: true });
       }
     }
   };
 
   // Initialize auth state
   useEffect(() => {
+    let mounted = true;
+
     const initializeAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        await handleAuthStateChange(session);
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) throw error;
+
+        if (!mounted) return;
+
+        if (session?.user) {
+          setUser(session.user);
+          const profile = await fetchUserProfile(session.user.id);
+          if (!mounted) return;
+          setUserProfile(profile);
+          handleRedirect(profile);
+        }
       } catch (error) {
         console.error('Error initializing auth:', error);
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
+    setIsLoading(true);
     initializeAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_, session) => {
-      await handleAuthStateChange(session);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return;
+
+      if (session?.user) {
+        setUser(session.user);
+        const profile = await fetchUserProfile(session.user.id);
+        if (!mounted) return;
+        setUserProfile(profile);
+        handleRedirect(profile);
+      } else {
+        setUser(null);
+        setUserProfile(null);
+        const publicPaths = ['/', '/signin', '/auth/callback'];
+        if (!publicPaths.includes(location.pathname)) {
+          navigate('/', { replace: true });
+        }
+      }
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [location.pathname, navigate]);
 
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
