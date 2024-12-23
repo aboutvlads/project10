@@ -43,20 +43,14 @@ export default function HowItWorks() {
       </div>
 
       <Card className="w-full max-w-[1200px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-8 sm:mb-12">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center">
-              <div className="w-[72px] h-[72px] mb-4 bg-[#F5F5F5] rounded-2xl flex items-center justify-center group-hover:bg-[#FDF567] transition-all duration-300">
-                <feature.icon className="w-8 h-8 text-[#1B1B1B]" />
+              <div className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] mb-3 sm:mb-4 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:bg-[#FDF567] transition-all duration-300">
+                <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#1B1B1B]" />
               </div>
-              <div className="mt-4">
-                <h3 className="text-[20px] font-medium text-[#1B1B1B] mb-1">
-                  {feature.title}
-                </h3>
-                <p className="text-base text-[#1B1B1B]">
-                  {feature.description}
-                </p>
-              </div>
+              <h3 className="text-sm sm:text-base font-semibold mb-1 sm:mb-2">{feature.title}</h3>
+              <p className="text-xs sm:text-sm text-[#757575]">{feature.description}</p>
             </div>
           ))}
         </div>
