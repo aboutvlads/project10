@@ -92,42 +92,52 @@ export default function DealCard({
         </div>
       </div>
 
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-3">
+      <div className="p-3 sm:p-4">
+        <div className="flex justify-between items-start mb-2 sm:mb-3">
           <div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-semibold">{destination}, {country} {flag}</h3>
+              <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
+                <h3 className="text-sm sm:text-lg font-semibold truncate">
+                  {destination}, {country} {flag}
+                </h3>
               </div>
-              <div className="flex flex-col text-sm text-gray-600">
-                <span>from {departure}</span>
-                {stops && <span className="mt-0.5">{stops}</span>}
+              <div className="flex flex-col text-xs sm:text-sm text-gray-600">
+                <span className="flex items-center">
+                  <span className="font-medium">From:</span>
+                  <span className="ml-1">{departure}</span>
+                </span>
+                {stops && (
+                  <span className="mt-0.5 flex items-center">
+                    <span className="font-medium">Stops:</span>
+                    <span className="ml-1">{stops}</span>
+                  </span>
+                )}
               </div>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-lg font-bold">€{price}</p>
-            <p className="text-sm text-gray-400 line-through">€{originalPrice}</p>
+          <div className="text-right flex flex-col items-end">
+            <p className="text-base sm:text-lg font-bold">€{price}</p>
+            <p className="text-xs sm:text-sm text-gray-400 line-through">€{originalPrice}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end text-sm text-gray-600 mb-3">
-          <div className="flex items-center gap-1">
-            <Heart className="w-4 h-4" />
-            <span>{likes}</span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
           <div className="flex items-center gap-2">
             <img
               src={postedByAvatar}
               alt={postedBy}
-              className="w-6 h-6 rounded-full"
+              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full"
             />
-            <span className="text-sm text-gray-600">{postedBy}</span>
+            <span className="text-gray-600 truncate max-w-[100px] sm:max-w-none">{postedBy}</span>
           </div>
-          <span className="text-xs text-gray-500">
+          <div className="flex items-center gap-1">
+            <Heart className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>{likes}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <span className="text-[10px] sm:text-xs text-gray-500">
             {getRelativeTime(created_at)}
           </span>
         </div>

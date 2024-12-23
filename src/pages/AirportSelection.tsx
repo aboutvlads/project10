@@ -25,14 +25,14 @@ export default function AirportSelection() {
             </p>
           </div>
 
-          <div className="mb-6 sm:mb-10">
+          <div className="mb-4 sm:mb-6">
             <RegionFilter
               selectedRegion={selectedRegion}
               onRegionChange={setSelectedRegion}
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 sm:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-10">
             {deals.map((deal, index) => (
               <DealCard key={index} {...deal} />
             ))}
