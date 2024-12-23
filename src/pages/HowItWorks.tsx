@@ -42,19 +42,21 @@ export default function HowItWorks() {
         </p>
       </div>
 
-      <Card className="w-full max-w-[1400px] px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mb-12">
+      <Card className="w-full max-w-[1200px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center">
-              <div className="w-[64px] h-[64px] mb-6 bg-[#E8E8E8] rounded-2xl flex items-center justify-center">
-                <feature.icon className="w-6 h-6 text-[#1B1B1B]" />
+              <div className="w-[72px] h-[72px] mb-4 bg-[#F5F5F5] rounded-2xl flex items-center justify-center group-hover:bg-[#FDF567] transition-all duration-300">
+                <feature.icon className="w-8 h-8 text-[#1B1B1B]" />
               </div>
-              <h3 className="text-[22px] font-semibold text-[#1B1B1B] mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-[16px] leading-[1.4] text-[#1B1B1B] max-w-[280px]">
-                {feature.description}
-              </p>
+              <div className="mt-4">
+                <h3 className="text-[20px] font-medium text-[#1B1B1B] mb-1">
+                  {feature.title}
+                </h3>
+                <p className="text-base text-[#1B1B1B]">
+                  {feature.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
