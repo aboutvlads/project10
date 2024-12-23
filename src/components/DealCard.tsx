@@ -97,8 +97,8 @@ export default function DealCard({
           <div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
-                <h3 className="text-sm sm:text-lg font-semibold truncate">
-                  {destination}, {country} {flag}
+                <h3 className="text-base sm:text-lg font-semibold truncate">
+                  {destination}, {country} <span className="text-lg sm:text-xl">{flag}</span>
                 </h3>
               </div>
               <div className="flex flex-col text-xs sm:text-sm text-gray-600">
