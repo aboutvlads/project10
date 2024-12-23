@@ -18,17 +18,11 @@ export default function Welcome() {
     return <Navigate to="/how-it-works" replace />;
   }
 
-  const handleGoogleSignIn = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleGoogleSignIn = async () => {
     try {
-      console.log('Starting Google sign in...');
       await signInWithGoogle();
     } catch (error) {
       console.error('Error signing in with Google:', error);
-      setMessage('Error signing in with Google. Please try again.');
-    } finally {
-      setIsLoading(false);
     }
   };
 

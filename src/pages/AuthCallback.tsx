@@ -7,51 +7,69 @@ export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        // Check if user profile exists
-        supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
-          .then(({ data: profile, error }) => {
-            if (error && error.code !== 'PGRST116') {
-              console.error('Error checking profile:', error);
-              navigate('/');
-              return;
-            }
+    const handleCallback = async () => {
+      try {
+        console.log('Processing auth callback...');
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Session error:', error);
+          throw error;
+        }
 
-            if (!profile) {
-              // Create new profile
-              supabase
-                .from('user_profiles')
-                .insert([
-                  {
-                    id: session.user.id,
-                    email: session.user.email,
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString(),
-                    onboarding_completed: true
-                  }
-                ])
-                .then(({ error: insertError }) => {
-                  if (insertError) {
-                    console.error('Error creating profile:', insertError);
-                    navigate('/');
-                    return;
-                  }
-                  navigate('/dashboard');
-                });
-            } else {
-              // Profile exists
-              navigate('/dashboard');
+        if (session?.user) {
+          console.log('User authenticated:', session.user.id);
+          
+          // Check if user profile exists
+          const { data: profile, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profileError && profileError.code !== 'PGRST116') {
+            console.error('Error checking profile:', profileError);
+            throw profileError;
+          }
+
+          if (!profile) {
+            console.log('Creating new user profile');
+            const { error: insertError } = await supabase
+              .from('user_profiles')
+              .insert([
+                {
+                  id: session.user.id,
+                  email: session.user.email,
+                  created_at: new Date().toISOString(),
+                  updated_at: new Date().toISOString(),
+                  onboarding_completed: false
+                }
+              ]);
+
+            if (insertError) {
+              console.error('Error creating profile:', insertError);
+              throw insertError;
             }
-          });
-      } else {
+          }
+
+          if (profile?.onboarding_completed) {
+            console.log('Onboarding completed, redirecting to dashboard');
+            navigate('/dashboard');
+          } else {
+            console.log('Redirecting to onboarding');
+            navigate('/onboarding');
+          }
+        } else {
+          console.log('No session found, redirecting to home');
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Error in auth callback:', error);
         navigate('/');
       }
-    });
+    };
+
+    handleCallback();
   }, [supabase, navigate]);
 
   return (
