@@ -38,56 +38,70 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkSession = async () => {
       try {
+        setIsLoading(true);
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
         
-        if (session?.user) {
+        if (session?.user && mounted) {
           setUser(session.user);
           // Fetch user profile after confirming session
           const { data: profile, error: profileError } = await supabase
-            .from('user_profiles')
+            .from('profiles')
             .select('*')
             .eq('id', session.user.id)
             .single();
             
-          if (profileError) throw profileError;
-          setUserProfile(profile);
-        } else {
+          if (profileError && mounted) throw profileError;
+          if (mounted) setUserProfile(profile);
+        } else if (mounted) {
           setUser(null);
           setUserProfile(null);
         }
       } catch (error) {
         console.error('Error checking session:', error);
-        // Clear state on error
-        setUser(null);
-        setUserProfile(null);
+        if (mounted) {
+          setUser(null);
+          setUserProfile(null);
+        }
       } finally {
-        setIsLoading(false);
-        setSessionChecked(true);
+        if (mounted) {
+          setIsLoading(false);
+          setSessionChecked(true);
+        }
       }
     };
 
     checkSession();
 
-    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
+      if (!mounted) return;
+      
+      setIsLoading(true);
       if (session?.user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        setUserProfile(profile);
+        setUser(session.user);
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          if (mounted) setUserProfile(profile);
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
       } else {
+        setUser(null);
         setUserProfile(null);
       }
       setIsLoading(false);
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -103,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       try {
         const { data, error } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
@@ -154,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.log('Google sign in successful:', user.id);
         // Check if profile exists
         const { data: profile, error: profileError } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
@@ -167,7 +181,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!profile) {
           console.log('Creating user profile for Google user');
           const { error: insertError } = await supabase
-            .from('user_profiles')
+            .from('profiles')
             .insert([
               {
                 id: user.id,
