@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import { useAuth } from '../context/AuthContext';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 interface Airport {
   code: string;
@@ -136,6 +137,7 @@ const airports: Airport[] = [
 ];
 
 export default function HomeAirport() {
+  useScrollTop();
   const navigate = useNavigate();
   const { user, supabase } = useAuth();
   const [selectedAirport, setSelectedAirport] = useState<Airport | null>(null);

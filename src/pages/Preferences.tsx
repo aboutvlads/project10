@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import { useAuth } from '../context/AuthContext';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 interface Destination {
   id: string;
@@ -80,6 +81,7 @@ const destinations: Destination[] = [
 ];
 
 export default function Preferences() {
+  useScrollTop();
   const navigate = useNavigate();
   const { user, supabase } = useAuth();
   const [selectedDestinations, setSelectedDestinations] = useState<string[]>([]);

@@ -6,9 +6,11 @@ import RegionFilter from '../components/RegionFilter';
 import DealCard from '../components/DealCard';
 import { dealsByRegion } from '../data/deals';
 import { useNavigate } from 'react-router-dom';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 export default function AirportSelection() {
   const navigate = useNavigate();
+  useScrollTop();
   const [selectedRegion, setSelectedRegion] = useState('Europe');
   const deals = dealsByRegion[selectedRegion] || dealsByRegion.Europe;
 

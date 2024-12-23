@@ -4,8 +4,10 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 export default function Notifications() {
+  useScrollTop();
   const navigate = useNavigate();
   const { user, supabase } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
