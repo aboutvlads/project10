@@ -265,7 +265,7 @@ export default function HomeAirport() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               variant="outline"
-              onClick={() => navigate('/how-it-works')}
+              onClick={() => navigate('/airport-selection')}
               className="w-full sm:w-auto"
             >
               Back
