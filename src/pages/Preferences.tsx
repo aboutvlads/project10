@@ -131,18 +131,18 @@ export default function Preferences() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-white flex flex-col items-center justify-center p-4">
-      <div className="max-w-2xl mx-auto text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1B1B1B] mb-2 sm:mb-4">
+      <div className="max-w-2xl mx-auto text-center mb-8">
+        <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#1B1B1B] mb-2 sm:mb-4">
           What's on your bucket list?
         </h1>
-        <p className="text-sm sm:text-base text-[#757575] px-4 sm:px-0">
+        <p className="text-sm sm:text-base text-[#757575]">
           Select destinations you'd love to visit and we'll notify you about great deals
         </p>
       </div>
 
       <Card className="w-full max-w-4xl !max-w-4xl">
-        <div className="space-y-4 sm:space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6">
             {destinations.map((destination) => (
               <div
                 key={destination.id}
@@ -155,7 +155,7 @@ export default function Preferences() {
                   }
                 `}
               >
-                <div className="relative pb-[120%] sm:pb-[133%]">
+                <div className="relative pb-[100%] sm:pb-[133%]">
                   <img
                     src={destination.image}
                     alt={destination.name}
@@ -170,11 +170,11 @@ export default function Preferences() {
                       }
                     `}
                   />
-                  <div className="absolute inset-0 p-3 sm:p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
+                  <div className="absolute inset-0 p-2 sm:p-6 flex flex-col justify-end transform transition-transform duration-300 group-hover:translate-y-0">
                     <div className="space-y-1 sm:space-y-2">
-                      <h3 className="text-white font-bold text-base sm:text-xl leading-tight">{destination.name}</h3>
-                      <p className="text-white text-xs sm:text-sm font-medium opacity-90 line-clamp-2">{destination.description}</p>
-                      <span className="inline-block px-2 py-1 sm:px-3 sm:py-1 rounded-full bg-white/20 text-white text-[10px] sm:text-xs backdrop-blur-sm">
+                      <h3 className="text-white font-bold text-sm sm:text-xl leading-tight">{destination.name}</h3>
+                      <p className="text-white text-xs sm:text-sm font-medium opacity-90 line-clamp-2 sm:line-clamp-none">{destination.description}</p>
+                      <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/20 text-white text-[10px] sm:text-xs backdrop-blur-sm">
                         {destination.region}
                       </span>
                     </div>
@@ -185,7 +185,7 @@ export default function Preferences() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 text-center mt-4">
+            <p className="text-sm text-red-600 text-center">
               {error}
             </p>
           )}
@@ -194,7 +194,7 @@ export default function Preferences() {
             <Button
               variant="secondary"
               onClick={handleSubmit}
-              className="w-full sm:w-auto px-8"
+              className="w-full sm:w-auto"
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Continue'} {!isLoading && <ArrowRight className="w-4 h-4 ml-2" />}
