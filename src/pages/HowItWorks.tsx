@@ -32,28 +32,28 @@ export default function HowItWorks() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center pt-16 p-4">
-      <div className="max-w-2xl mx-auto text-center mb-8">
-        <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#1B1B1B] mb-2 sm:mb-4">
+      <div className="max-w-6xl mx-auto text-center mb-12">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#1B1B1B] mb-4 sm:mb-6">
           How Tripwingz Works
         </h1>
-        <p className="text-sm sm:text-base text-[#757575]">
+        <p className="text-base sm:text-lg text-[#757575] max-w-4xl mx-auto">
           We keep a close eye on prices from your airport to destinations all over the world.
           When the price drops, you know.
         </p>
       </div>
 
-      <Card className="w-full max-w-[1200px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <Card className="w-full max-w-[1600px] px-4 sm:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center">
-              <div className="w-[72px] h-[72px] mb-4 bg-[#F5F5F5] rounded-2xl flex items-center justify-center group-hover:bg-[#FDF567] transition-all duration-300">
-                <feature.icon className="w-8 h-8 text-[#1B1B1B]" />
+              <div className="w-[96px] h-[96px] mb-6 bg-[#F5F5F5] rounded-2xl flex items-center justify-center group-hover:bg-[#FDF567] transition-all duration-300">
+                <feature.icon className="w-12 h-12 text-[#1B1B1B]" />
               </div>
               <div className="mt-4">
-                <h3 className="text-[20px] font-medium text-[#1B1B1B] mb-1">
+                <h3 className="text-2xl font-semibold text-[#1B1B1B] mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-base text-[#1B1B1B]">
+                <p className="text-lg text-[#1B1B1B] max-w-xs mx-auto">
                   {feature.description}
                 </p>
               </div>
