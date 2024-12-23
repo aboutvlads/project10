@@ -32,121 +32,189 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      const { data: profile, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) throw error;
-      return profile;
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-      return null;
-    }
-  };
-
-  const handleRedirect = (profile: UserProfile | null) => {
-    const publicPaths = ['/', '/signin', '/auth/callback'];
-    const currentPath = location.pathname;
-
-    if (publicPaths.includes(currentPath)) {
-      if (profile?.onboarding_completed) {
-        navigate('/dashboard', { replace: true });
-      } else {
-        navigate('/onboarding', { replace: true });
-      }
-    }
-  };
-
-  // Initialize auth state
+  // Check and set initial session
   useEffect(() => {
-    let mounted = true;
-
-    const initializeAuth = async () => {
+    const checkSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
-
-        if (!mounted) return;
-
-        if (session?.user) {
-          setUser(session.user);
-          const profile = await fetchUserProfile(session.user.id);
-          if (!mounted) return;
-          setUserProfile(profile);
-          handleRedirect(profile);
-        }
+        
+        setUser(session?.user ?? null);
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        console.error('Error checking session:', error);
       } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+        setSessionChecked(true);
       }
     };
 
-    setIsLoading(true);
-    initializeAuth();
+    checkSession();
 
+    // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (!mounted) return;
-
-      if (session?.user) {
-        setUser(session.user);
-        const profile = await fetchUserProfile(session.user.id);
-        if (!mounted) return;
-        setUserProfile(profile);
-        handleRedirect(profile);
-      } else {
-        setUser(null);
-        setUserProfile(null);
-        const publicPaths = ['/', '/signin', '/auth/callback'];
-        if (!publicPaths.includes(location.pathname)) {
-          navigate('/', { replace: true });
-        }
-      }
+      console.log('Auth state changed:', event);
+      setUser(session?.user ?? null);
     });
 
     return () => {
-      mounted = false;
       subscription.unsubscribe();
     };
-  }, [location.pathname, navigate]);
+  }, []);
+
+  // Fetch user profile whenever user changes
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user || !sessionChecked) {
+        setUserProfile(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        setUserProfile(data);
+
+        // Only redirect on initial load or auth callback
+        const currentPath = location.pathname;
+        if (currentPath === '/' || currentPath === '/auth/callback') {
+          if (data?.onboarding_completed) {
+            navigate('/dashboard');
+          } else {
+            navigate('/onboarding');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user, sessionChecked, navigate, location]);
 
   const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'https://tripwingz.com/auth/callback',
-      },
-    });
+    try {
+      console.log('Starting Google sign in...');
+      const { data: { user }, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Google sign in error:', error);
+        throw error;
+      }
+
+      if (user) {
+        console.log('Google sign in successful:', user.id);
+        // Check if profile exists
+        const { data: profile, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError && profileError.code !== 'PGRST116') {
+          console.error('Error checking profile:', profileError);
+          throw profileError;
+        }
+
+        if (!profile) {
+          console.log('Creating user profile for Google user');
+          const { error: insertError } = await supabase
+            .from('user_profiles')
+            .insert([
+              {
+                id: user.id,
+                email: user.email,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                onboarding_completed: false
+              }
+            ]);
+
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+            throw insertError;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in Google sign in:', error);
+      throw error;
+    }
   };
 
   const signInWithEmail = async (email: string) => {
     try {
-      const { error } = await supabase.auth.signInWithOtp({
+      console.log('Sending magic link to:', email);
+      const { data, error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: 'https://tripwingz.com/auth/callback',
-        },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          shouldCreateUser: true,
+        }
       });
-      return { error };
+      
+      console.log('Sign in response:', { data, error });
+      
+      if (error) {
+        console.error('Sign in error:', error);
+        return { error };
+      }
+      
+      return { error: null };
     } catch (error) {
+      console.error('Unexpected error during sign in:', error);
       return { error };
     }
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/', { replace: true });
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      setUser(null);
+      setUserProfile(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Show loading state only during initial session check
+  if (!sessionChecked) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider
@@ -167,7 +235,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

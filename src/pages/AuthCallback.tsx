@@ -9,10 +9,17 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        console.log('Processing auth callback...');
         const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
+        
+        if (error) {
+          console.error('Session error:', error);
+          throw error;
+        }
 
         if (session?.user) {
+          console.log('User authenticated:', session.user.id);
+          
           // Check if user profile exists
           const { data: profile, error: profileError } = await supabase
             .from('user_profiles')
@@ -20,29 +27,45 @@ export default function AuthCallback() {
             .eq('id', session.user.id)
             .single();
 
-          if (!profile && (!profileError || profileError.code === 'PGRST116')) {
-            // Create new profile if it doesn't exist
-            await supabase.from('user_profiles').insert([
-              {
-                id: session.user.id,
-                email: session.user.email,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                onboarding_completed: false
-              }
-            ]);
-            navigate('/onboarding', { replace: true });
-          } else if (profile?.onboarding_completed) {
-            navigate('/dashboard', { replace: true });
+          if (profileError && profileError.code !== 'PGRST116') {
+            console.error('Error checking profile:', profileError);
+            throw profileError;
+          }
+
+          if (!profile) {
+            console.log('Creating new user profile');
+            const { error: insertError } = await supabase
+              .from('user_profiles')
+              .insert([
+                {
+                  id: session.user.id,
+                  email: session.user.email,
+                  created_at: new Date().toISOString(),
+                  updated_at: new Date().toISOString(),
+                  onboarding_completed: false
+                }
+              ]);
+
+            if (insertError) {
+              console.error('Error creating profile:', insertError);
+              throw insertError;
+            }
+          }
+
+          if (profile?.onboarding_completed) {
+            console.log('Onboarding completed, redirecting to dashboard');
+            navigate('/dashboard');
           } else {
-            navigate('/onboarding', { replace: true });
+            console.log('Redirecting to onboarding');
+            navigate('/onboarding');
           }
         } else {
-          navigate('/', { replace: true });
+          console.log('No session found, redirecting to home');
+          navigate('/');
         }
       } catch (error) {
         console.error('Error in auth callback:', error);
-        navigate('/', { replace: true });
+        navigate('/');
       }
     };
 
