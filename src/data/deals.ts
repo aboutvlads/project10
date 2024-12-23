@@ -18,7 +18,7 @@ export const dealsByRegion: Record<string, Deal[]> = {
       country: 'France',
       price: 457,
       originalPrice: 1050,
-      from: 'to Paris, France from random EU cities',
+      from: 'From Washington DC (IAD)',
       tripType: 'Roundtrip • Nonstop',
       isPastDeal: true
     },
@@ -28,7 +28,7 @@ export const dealsByRegion: Record<string, Deal[]> = {
       country: 'United Kingdom',
       price: 498,
       originalPrice: 950,
-      from: 'to London, UK from random EU cities',
+      from: 'From Chicago (ORD)',
       tripType: 'Roundtrip • Nonstop',
       isPastDeal: true
     },
@@ -38,7 +38,7 @@ export const dealsByRegion: Record<string, Deal[]> = {
       country: 'Italy',
       price: 469,
       originalPrice: 850,
-      from: 'to Rome, Italy from random EU cities',
+      from: 'From Miami (MIA)',
       tripType: 'Roundtrip • 1-stop',
       isPastDeal: true
     },
@@ -48,8 +48,8 @@ export const dealsByRegion: Record<string, Deal[]> = {
       country: 'Portugal',
       price: 1240,
       originalPrice: 4500,
-      from: 'to Lisbon, Portugal from random EU cities',
-      tripType: 'Roundtrip • Nonstop',
+      from: 'From Los Angeles (LAX)',
+      tripType: 'Roundtrip • Business',
       isPastDeal: true,
       isBusinessClass: true
     }
@@ -86,7 +86,7 @@ export const dealsByRegion: Record<string, Deal[]> = {
       isPastDeal: true
     },
     {
-      image: 'https://images.unsplash.com/photo-1444723121867-48b448d14d57',
+      image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9',
       city: 'Los Angeles',
       country: 'USA',
       price: 890,
@@ -188,40 +188,40 @@ export const dealsByRegion: Record<string, Deal[]> = {
       image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf',
       city: 'Tokyo',
       country: 'Japan',
-      price: 998,
-      originalPrice: 1850,
-      from: 'to Tokyo, Japan from random EU cities',
+      price: 689,
+      originalPrice: 1500,
+      from: 'From Los Angeles (LAX)',
       tripType: 'Roundtrip • 1-stop',
       isPastDeal: true
     },
     {
-      image: 'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa',
+      image: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1',
+      city: 'Seoul',
+      country: 'South Korea',
+      price: 645,
+      originalPrice: 1400,
+      from: 'From Seattle (SEA)',
+      tripType: 'Roundtrip • 1-stop',
+      isPastDeal: true
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1506158669146-619067262a00',
       city: 'Bangkok',
       country: 'Thailand',
-      price: 879,
-      originalPrice: 1650,
-      from: 'to Bangkok, Thailand from random EU cities',
+      price: 545,
+      originalPrice: 1200,
+      from: 'From San Francisco (SFO)',
       tripType: 'Roundtrip • 1-stop',
       isPastDeal: true
     },
     {
-      image: 'https://images.unsplash.com/photo-1536599424071-0b215a388ba7',
+      image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4',
       city: 'Singapore',
       country: 'Singapore',
-      price: 920,
-      originalPrice: 1750,
-      from: 'to Singapore from random EU cities',
-      tripType: 'Roundtrip • 1-stop',
-      isPastDeal: true
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1',
-      city: 'Dubai',
-      country: 'UAE',
-      price: 2450,
-      originalPrice: 7800,
-      from: 'to Dubai, UAE from random EU cities',
-      tripType: 'Roundtrip • Nonstop',
+      price: 1490,
+      originalPrice: 3800,
+      from: 'From New York (JFK)',
+      tripType: 'Roundtrip • Business',
       isPastDeal: true,
       isBusinessClass: true
     }

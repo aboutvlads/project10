@@ -34,7 +34,25 @@ export default function AirportSelection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-10">
             {deals.map((deal, index) => (
-              <DealCard key={index} {...deal} />
+              <DealCard
+                key={index}
+                {...deal}
+                destination={deal.city}
+                departure={deal.from}
+                stops={deal.tripType}
+                likes={Math.floor(Math.random() * 50) + 10}
+                isHot={Math.random() > 0.7}
+                postedBy="TripWingz"
+                postedByAvatar="/logo.png"
+                postedByDescription="Deal Hunter"
+                created_at={new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()}
+                flag={deal.country === 'United Kingdom' ? '🇬🇧' : 
+                      deal.country === 'France' ? '🇫🇷' :
+                      deal.country === 'Italy' ? '🇮🇹' :
+                      deal.country === 'Portugal' ? '🇵🇹' :
+                      deal.country === 'Spain' ? '🇪🇸' :
+                      ''}
+              />
             ))}
           </div>
 
