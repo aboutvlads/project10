@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Headphones, Zap, Timer, Layers } from 'lucide-react';
+import { ArrowRight, Plane, Zap, Timer, Link } from 'lucide-react';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ export default function HowItWorks() {
 
   const features = [
     {
-      icon: Headphones,
+      icon: Plane,
       title: 'Cheapest flight deals',
       description: 'We find flight deals that are up to 70% - 80% off their usual prices'
     },
@@ -24,7 +24,7 @@ export default function HowItWorks() {
       description: 'Plan your itinerary and pack your bags, while we find the best flight deal for you'
     },
     {
-      icon: Layers,
+      icon: Link,
       title: 'Easy booking',
       description: "You're just one click away from your dream vacation"
     }
