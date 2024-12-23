@@ -106,8 +106,8 @@ export default function DealCard({
             </div>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold">${price}</p>
-            <p className="text-sm text-gray-400 line-through">${originalPrice}</p>
+            <p className="text-lg font-bold">€{price}</p>
+            <p className="text-sm text-gray-400 line-through">€{originalPrice}</p>
           </div>
         </div>
 
