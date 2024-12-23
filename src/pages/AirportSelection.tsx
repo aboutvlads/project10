@@ -38,8 +38,8 @@ export default function AirportSelection() {
                 key={index}
                 {...deal}
                 destination={deal.city}
-                departure={deal.from}
-                stops={deal.tripType}
+                departure={deal.from.replace('From ', '')}
+                stops={deal.tripType.replace('Stops: ', '')}
                 likes={Math.floor(Math.random() * 50) + 10}
                 isHot={Math.random() > 0.7}
                 created_at={new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()}
