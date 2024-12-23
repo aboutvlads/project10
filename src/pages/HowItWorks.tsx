@@ -42,8 +42,8 @@ export default function HowItWorks() {
         </p>
       </div>
 
-      <Card className="w-full max-w-[1200px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <Card className="w-full max-w-[1400px] px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mb-12">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <div className="w-[64px] h-[64px] mb-6 bg-[#E8E8E8] rounded-2xl flex items-center justify-center">
