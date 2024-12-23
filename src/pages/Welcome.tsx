@@ -13,8 +13,17 @@ export default function Welcome() {
   const [message, setMessage] = useState('');
   const { signInWithGoogle, signInWithEmail, user, userProfile, isLoading: authLoading } = useAuth();
 
-  // Redirect to dashboard if already authenticated
-  if (user && userProfile && !authLoading) {
+  // Show loading state while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  // Redirect if user is authenticated
+  if (user && userProfile) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -36,31 +45,19 @@ export default function Welcome() {
     setMessage('');
 
     try {
-      console.log('Attempting to sign in with email:', email);
       const { error } = await signInWithEmail(email);
       
       if (error) {
-        console.error('Error from signInWithEmail:', error);
         setMessage(error.message || 'Failed to send magic link');
       } else {
-        console.log('Magic link sent successfully');
         setMessage('Check your email for the magic link!');
       }
     } catch (error) {
-      console.error('Unexpected error:', error);
       setMessage('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
-
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-white flex flex-col items-center justify-center p-4">
@@ -103,25 +100,22 @@ export default function Welcome() {
           )}
 
           <Button
-            variant="secondary"
             onClick={handleEmailContinue}
-            className="w-full"
             disabled={isLoading}
+            className="w-full"
           >
-            {isLoading ? 'Sending...' : 'Get started'} {!isLoading && <ArrowRight className="w-4 h-4" />}
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                Continue
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </div>
+            )}
           </Button>
         </div>
-
-        <p className="mt-4 text-xs sm:text-sm text-[#757575] text-center">
-          By continuing, you agree to our{' '}
-          <a href="#" className="text-[#1B1B1B] underline hover:text-black">
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href="#" className="text-[#1B1B1B] underline hover:text-black">
-            Privacy Policy
-          </a>
-        </p>
       </Card>
     </div>
   );
