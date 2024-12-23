@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch user profile whenever user changes
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const checkOnboardingStatus = async () => {
       if (!user || !sessionChecked) {
         setUserProfile(null);
         setIsLoading(false);
@@ -75,25 +75,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        const { data, error } = await supabase
+        // Quick check for onboarding status only
+        const { data: onboardingData, error: onboardingError } = await supabase
+          .from('user_profiles')
+          .select('onboarding_completed')
+          .eq('id', user.id)
+          .single();
+
+        if (onboardingError) throw onboardingError;
+
+        // Handle navigation based on onboarding status
+        const currentPath = location.pathname;
+        if (currentPath === '/' || currentPath === '/auth/callback') {
+          if (onboardingData?.onboarding_completed) {
+            navigate('/dashboard');
+          } else {
+            navigate('/onboarding');
+          }
+        }
+
+        // Fetch full profile in the background
+        const { data: fullProfile, error } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', user.id)
           .single();
 
         if (error) throw error;
-
-        setUserProfile(data);
-
-        // Only redirect on initial load or auth callback
-        const currentPath = location.pathname;
-        if (currentPath === '/' || currentPath === '/auth/callback') {
-          if (data?.onboarding_completed) {
-            navigate('/dashboard');
-          } else {
-            navigate('/onboarding');
-          }
-        }
+        setUserProfile(fullProfile);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       } finally {
@@ -101,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    fetchUserProfile();
+    checkOnboardingStatus();
   }, [user, sessionChecked, navigate, location]);
 
   const signInWithGoogle = async () => {
