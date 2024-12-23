@@ -42,9 +42,6 @@ export default function AirportSelection() {
                 stops={deal.tripType}
                 likes={Math.floor(Math.random() * 50) + 10}
                 isHot={Math.random() > 0.7}
-                postedBy="TripWingz"
-                postedByAvatar="/logo.png"
-                postedByDescription="Deal Hunter"
                 created_at={new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()}
                 flag={deal.country === 'United Kingdom' ? '🇬🇧' : 
                       deal.country === 'France' ? '🇫🇷' :
