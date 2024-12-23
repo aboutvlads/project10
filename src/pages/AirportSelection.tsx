@@ -40,7 +40,6 @@ export default function AirportSelection() {
                 destination={deal.city}
                 departure={deal.from.replace('From ', '')}
                 stops={deal.tripType}
-                likes={Math.floor(Math.random() * 50) + 10}
                 isHot={Math.random() > 0.7}
                 created_at={new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()}
                 flag={deal.country === 'United Kingdom' ? '🇬🇧' : 
