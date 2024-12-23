@@ -49,6 +49,9 @@ export default function AirportSelection() {
                       deal.country === 'Spain' ? '🇪🇸' :
                       ''}
                 isBusinessClass={false}
+                likes={null}
+                postedBy={null}
+                postedByAvatar={null}
                 showLikes={false}
               />
             ))}
