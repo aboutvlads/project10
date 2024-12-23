@@ -13,9 +13,9 @@ export default function Welcome() {
   const [message, setMessage] = useState('');
   const { signInWithGoogle, signInWithEmail, user, userProfile, isLoading: authLoading } = useAuth();
 
-  // Redirect to how-it-works if already authenticated
+  // Redirect to dashboard if already authenticated
   if (user && userProfile && !authLoading) {
-    return <Navigate to="/how-it-works" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleGoogleSignIn = async () => {

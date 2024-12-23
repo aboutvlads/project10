@@ -85,9 +85,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setUserProfile(data);
 
-        // Only redirect on initial load or auth callback
+        // Redirect authenticated users to dashboard from auth-related pages
+        const authPaths = ['/', '/auth/callback', '/signin'];
         const currentPath = location.pathname;
-        if (currentPath === '/' || currentPath === '/auth/callback') {
+        if (authPaths.includes(currentPath)) {
           if (data?.onboarding_completed) {
             navigate('/dashboard');
           } else {
