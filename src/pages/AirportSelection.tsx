@@ -49,6 +49,7 @@ export default function AirportSelection() {
                       deal.country === 'Spain' ? '🇪🇸' :
                       ''}
                 isBusinessClass={false}
+                showLikes={false}
               />
             ))}
           </div>
