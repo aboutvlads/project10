@@ -13,16 +13,35 @@ export default function Welcome() {
   const [message, setMessage] = useState('');
   const { signInWithGoogle, signInWithEmail, user, userProfile, isLoading: authLoading } = useAuth();
 
-  // Redirect to how-it-works if already authenticated
+  // Only redirect if we have both user and profile, and we're not in a loading state
   if (user && userProfile && !authLoading) {
+    if (userProfile.onboarding_completed) {
+      return <Navigate to="/dashboard" replace />;
+    }
     return <Navigate to="/how-it-works" replace />;
+  }
+
+  // Show loading state only during initial auth check
+  if (authLoading && !isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true);
       await signInWithGoogle();
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      setMessage('Failed to sign in with Google. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,14 +55,12 @@ export default function Welcome() {
     setMessage('');
 
     try {
-      console.log('Attempting to sign in with email:', email);
       const { error } = await signInWithEmail(email);
       
       if (error) {
-        console.error('Error from signInWithEmail:', error);
+        console.error('Error sending magic link:', error);
         setMessage(error.message || 'Failed to send magic link');
       } else {
-        console.log('Magic link sent successfully');
         setMessage('Check your email for the magic link!');
       }
     } catch (error) {
@@ -53,14 +70,6 @@ export default function Welcome() {
       setIsLoading(false);
     }
   };
-
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-white flex flex-col items-center justify-center p-4">

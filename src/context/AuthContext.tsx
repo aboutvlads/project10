@@ -37,36 +37,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Initial session check
   useEffect(() => {
     let mounted = true;
 
     const checkSession = async () => {
+      if (!mounted) return;
+      
       try {
-        setIsLoading(true);
         const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
         
-        if (session?.user && mounted) {
+        if (error) {
+          console.error('Session check error:', error);
+          if (mounted) {
+            setUser(null);
+            setUserProfile(null);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        if (!session) {
+          if (mounted) {
+            setUser(null);
+            setUserProfile(null);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        if (session.user && mounted) {
           setUser(session.user);
-          // Fetch user profile after confirming session
-          const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (profileError && mounted) throw profileError;
-          if (mounted) setUserProfile(profile);
-        } else if (mounted) {
-          setUser(null);
-          setUserProfile(null);
+          try {
+            const { data: profile, error: profileError } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single();
+
+            if (profileError) throw profileError;
+            if (mounted) setUserProfile(profile);
+          } catch (error) {
+            console.error('Profile fetch error:', error);
+            if (mounted) setUserProfile(null);
+          }
         }
       } catch (error) {
-        console.error('Error checking session:', error);
-        if (mounted) {
-          setUser(null);
-          setUserProfile(null);
-        }
+        console.error('Auth check error:', error);
       } finally {
         if (mounted) {
           setIsLoading(false);
@@ -77,27 +94,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     checkSession();
 
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Auth state change listener
+  useEffect(() => {
+    let mounted = true;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
+
+      console.log('Auth state changed:', event, session?.user?.id);
       
-      setIsLoading(true);
-      if (session?.user) {
-        setUser(session.user);
-        try {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-          if (mounted) setUserProfile(profile);
-        } catch (error) {
-          console.error('Error fetching profile:', error);
-        }
-      } else {
+      if (!session) {
         setUser(null);
         setUserProfile(null);
+        setIsLoading(false);
+        return;
       }
-      setIsLoading(false);
+
+      setUser(session.user);
+      
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profileError) throw profileError;
+        if (mounted) setUserProfile(profile);
+      } catch (error) {
+        console.error('Profile fetch error on auth change:', error);
+        if (mounted) setUserProfile(null);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
     });
 
     return () => {
@@ -106,101 +140,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Fetch user profile whenever user changes
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (!user || !sessionChecked) {
-        setUserProfile(null);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        setUserProfile(data);
-
-        // Only redirect on initial load or auth callback
-        const currentPath = location.pathname;
-        if (currentPath === '/' || currentPath === '/auth/callback') {
-          if (data?.onboarding_completed) {
-            navigate('/dashboard');
-          } else {
-            navigate('/onboarding');
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, [user, sessionChecked, navigate, location]);
-
   const signInWithGoogle = async () => {
     try {
-      console.log('Starting Google sign in...');
-      const { data: { user }, error } = await supabase.auth.signInWithOAuth({
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
       });
 
-      if (error) {
-        console.error('Google sign in error:', error);
-        throw error;
-      }
-
-      if (user) {
-        console.log('Google sign in successful:', user.id);
-        // Check if profile exists
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError && profileError.code !== 'PGRST116') {
-          console.error('Error checking profile:', profileError);
-          throw profileError;
-        }
-
-        if (!profile) {
-          console.log('Creating user profile for Google user');
-          const { error: insertError } = await supabase
-            .from('profiles')
-            .insert([
-              {
-                id: user.id,
-                email: user.email,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                onboarding_completed: false
-              }
-            ]);
-
-          if (insertError) {
-            console.error('Error creating profile:', insertError);
-            throw insertError;
-          }
-        }
-      }
+      if (error) throw error;
+      
+      return data;
     } catch (error) {
-      console.error('Error in Google sign in:', error);
+      console.error('Google sign in error:', error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
