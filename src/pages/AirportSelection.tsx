@@ -54,18 +54,11 @@ export default function AirportSelection() {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/onboarding')}
-              className="w-full sm:w-auto order-2 sm:order-1"
-            >
-              Back
-            </Button>
+          <div className="flex justify-center">
             <Button
               variant="secondary"
               onClick={() => navigate('/home-airport')}
-              className="w-full sm:w-auto order-1 sm:order-2"
+              className="w-full sm:w-auto"
             >
               Continue <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

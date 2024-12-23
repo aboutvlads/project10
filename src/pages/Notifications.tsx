@@ -142,22 +142,13 @@ export default function Notifications() {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/preferences')}
-            className="w-full sm:w-auto order-2 sm:order-1"
-            disabled={isLoading}
-          >
-            Back
-          </Button>
+        <div className="flex justify-center mt-6">
           <Button
             variant="secondary"
             onClick={handleFinish}
-            className="w-full sm:w-auto order-1 sm:order-2"
-            disabled={isLoading}
+            className="w-full sm:w-auto"
           >
-            {isLoading ? 'Saving...' : 'Finish'} {!isLoading && <ArrowRight className="w-4 h-4 ml-2" />}
+            Continue <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </Card>

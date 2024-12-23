@@ -188,14 +188,7 @@ export default function Preferences() {
             </p>
           )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/home-airport')}
-              className="w-full sm:w-auto"
-            >
-              Back
-            </Button>
+          <div className="flex justify-center mt-6">
             <Button
               variant="secondary"
               onClick={handleSubmit}
