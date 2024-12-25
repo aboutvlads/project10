@@ -4,28 +4,17 @@ import type { Database } from '../lib/database.types';
 
 type Deal = Database['public']['Tables']['deals']['Row'] & {
   tags: string[];
-  isFromHomeAirport: boolean;
 };
 
 export function useDeals() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { supabase, user } = useAuth();
+  const { supabase } = useAuth();
 
   useEffect(() => {
     async function fetchDeals() {
       try {
-        // Fetch user's home airport
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('home_airport')
-          .eq('id', user?.id)
-          .single();
-
-        if (userError) throw userError;
-
-        // Fetch all deals
         const { data: dealsData, error: dealsError } = await supabase
           .from('deals')
           .select('*')
@@ -43,8 +32,7 @@ export function useDeals() {
           ...deal,
           tags: tagsData
             .filter(tag => tag.deal_id === deal.id)
-            .map(tag => tag.tag),
-          isFromHomeAirport: deal.departure?.includes(userData?.home_airport)
+            .map(tag => tag.tag)
         }));
 
         setDeals(dealsWithTags);
@@ -55,10 +43,8 @@ export function useDeals() {
       }
     }
 
-    if (user?.id) {
-      fetchDeals();
-    }
-  }, [supabase, user?.id]);
+    fetchDeals();
+  }, [supabase]);
 
   return { deals, loading, error };
 }

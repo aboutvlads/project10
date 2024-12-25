@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, Home } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DealCard from '../components/DealCard';
@@ -9,15 +9,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { deals, loading, error } = useDeals();
   const [sortBy] = useState('Latest');
-  const [showHomeAirportOnly, setShowHomeAirportOnly] = useState(false);
 
   const handleDealSelect = (dealId: string) => {
     navigate(`/dashboard/${dealId}`);
   };
-
-  const filteredDeals = showHomeAirportOnly 
-    ? deals.filter(deal => deal.isFromHomeAirport)
-    : deals;
 
   if (loading) {
     return (
@@ -45,18 +40,7 @@ export default function Dashboard() {
               Personalized flight deals based on your preferences
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-            <button 
-              onClick={() => setShowHomeAirportOnly(!showHomeAirportOnly)}
-              className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm ${
-                showHomeAirportOnly 
-                  ? 'bg-[#FFE978] text-[#1B1B1B]' 
-                  : 'bg-white text-gray-700'
-              }`}
-            >
-              <Home className="w-4 h-4" />
-              {showHomeAirportOnly ? 'Home Airport Only' : 'All Airports'}
-            </button>
+          <div className="relative">
             <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm">
               Sort by {sortBy}
               <ChevronDown className="w-4 h-4" />
@@ -64,20 +48,16 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {filteredDeals.length === 0 ? (
+        {deals.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {showHomeAirportOnly 
-                ? 'No deals found from your home airport'
-                : 'No deals found'}
-            </h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No deals found</h3>
             <p className="text-gray-600">
               We'll notify you when new deals matching your preferences become available.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDeals.map((deal) => (
+            {deals.map((deal) => (
               <DealCard
                 key={deal.id}
                 id={deal.id}
