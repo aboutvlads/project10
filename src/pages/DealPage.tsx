@@ -100,6 +100,7 @@ export default function DealPage() {
               </h1>
             </div>
             <div className="space-y-1">
+              <p className="text-sm sm:text-base text-gray-600">From: {deal.departure}</p>
               <p className="text-sm sm:text-base text-gray-600">{deal.stops}</p>
               <p className="text-sm sm:text-base text-gray-600">{deal.cabin_type}</p>
             </div>
