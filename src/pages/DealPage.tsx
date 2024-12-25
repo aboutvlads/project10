@@ -98,8 +98,12 @@ export default function DealPage() {
               <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2">
                 {deal.destination}, {deal.country} <span>{deal.flag}</span>
               </h1>
-              <div className="flex sm:hidden items-center">
+              <div className="flex sm:hidden flex-col items-end">
                 <p className="text-xl font-bold">€{deal.price}</p>
+                <p className="text-sm text-gray-400 line-through">€{deal.original_price}</p>
+                <p className="text-xs text-green-500">
+                  {deal.discount}% OFF
+                </p>
               </div>
             </div>
             <div className="space-y-1">
