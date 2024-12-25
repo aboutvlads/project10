@@ -94,10 +94,16 @@ export default function DealPage() {
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-0 mb-6">
           <div className="w-full">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2">
-                {deal.destination}, {deal.country} <span>{deal.flag}</span>
-              </h1>
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2 mb-1">
+                  {deal.destination}, {deal.country} <span>{deal.flag}</span>
+                </h1>
+                <div className="space-y-0.5">
+                  <p className="text-sm text-gray-600">From: {deal.departure}</p>
+                  <p className="text-sm text-gray-600">{deal.stops}</p>
+                </div>
+              </div>
               <div className="flex sm:hidden flex-col items-end">
                 <p className="text-xl font-bold">€{deal.price}</p>
                 <p className="text-sm text-gray-400 line-through">€{deal.original_price}</p>
@@ -107,8 +113,6 @@ export default function DealPage() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm sm:text-base text-gray-600">From: {deal.departure}</p>
-              <p className="text-sm sm:text-base text-gray-600">{deal.stops}</p>
               <p className="text-sm sm:text-base text-gray-600">{deal.cabin_type}</p>
             </div>
           </div>
