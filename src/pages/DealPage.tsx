@@ -113,50 +113,6 @@ export default function DealPage() {
           </div>
         </div>
 
-        {/* Flight Times */}
-        <div className="bg-gray-50 rounded-xl p-4 sm:p-8 mb-6 sm:mb-8">
-          <div className="flex items-center justify-between">
-            {/* Departure */}
-            <div className="text-center flex-shrink-0">
-              <p className="text-xl sm:text-3xl font-bold mb-1">{deal.departure_time}</p>
-              <p className="text-sm sm:text-lg text-gray-600">{deal.departure}</p>
-            </div>
-            
-            {/* Flight Path */}
-            <div className="flex-1 mx-4 sm:mx-12 relative flex flex-col items-center">
-              {/* Duration */}
-              <div className="mb-2 sm:mb-4">
-                <div className="bg-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-sm">
-                  <span className="text-xs sm:text-sm font-medium text-gray-600">{deal.flight_duration}</span>
-                </div>
-              </div>
-              
-              {/* Line and Plane */}
-              <div className="w-full relative">
-                <div className="absolute w-full top-1/2 border-t-2 border-dashed border-gray-300"></div>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-50 rounded-full p-1.5 sm:p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400 transform rotate-90">
-                    <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                  </svg>
-                </div>
-              </div>
-              
-              {/* Stops */}
-              <div className="mt-2 sm:mt-4">
-                <div className="bg-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-sm">
-                  <span className="text-xs sm:text-sm text-gray-500">{deal.stops}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Arrival */}
-            <div className="text-center flex-shrink-0">
-              <p className="text-xl sm:text-3xl font-bold mb-1">{deal.arrival_time}</p>
-              <p className="text-sm sm:text-lg text-gray-600">{deal.destination}</p>
-            </div>
-          </div>
-        </div>
-
         {/* Sample Dates */}
         {deal.sample_dates && (
           <div className="mb-6 sm:mb-8">
