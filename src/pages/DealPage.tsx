@@ -157,6 +157,28 @@ export default function DealPage() {
           </div>
         </div>
 
+        {/* Sample Dates */}
+        {deal.sample_dates && (
+          <div className="mb-6 sm:mb-8">
+            <p className="text-gray-600 mb-2">Sample Dates</p>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <p className="text-sm whitespace-pre-line">{deal.sample_dates}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Deal Screenshot */}
+        {deal.deal_screenshot_url && (
+          <div className="mb-6 sm:mb-8">
+            <p className="text-gray-600 mb-2">Deal Screenshot</p>
+            <img
+              src={deal.deal_screenshot_url}
+              alt="Deal Screenshot"
+              className="w-full rounded-lg shadow-md"
+            />
+          </div>
+        )}
+
         {/* Posted By */}
         <div className="mb-6 sm:mb-8">
           <p className="text-gray-600 mb-2">Posted by</p>
@@ -183,28 +205,6 @@ export default function DealPage() {
             Posted {new Date(deal.created_at).toLocaleDateString()}
           </div>
         </div>
-
-        {/* Sample Dates */}
-        {deal.sample_dates && (
-          <div className="mb-6 sm:mb-8">
-            <p className="text-gray-600 mb-2">Sample Dates</p>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm whitespace-pre-line">{deal.sample_dates}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Deal Screenshot */}
-        {deal.deal_screenshot_url && (
-          <div className="mb-6 sm:mb-8">
-            <p className="text-gray-600 mb-2">Deal Screenshot</p>
-            <img
-              src={deal.deal_screenshot_url}
-              alt="Deal Screenshot"
-              className="w-full rounded-lg shadow-md"
-            />
-          </div>
-        )}
 
         {/* Action Buttons */}
         <div className="flex gap-4">
