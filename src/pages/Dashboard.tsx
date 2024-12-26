@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -13,11 +13,31 @@ export default function Dashboard() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const { deals, loading, error } = useDeals(selectedCity);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const uniqueCities = useMemo(() => {
     const cities = new Set(deals.map(deal => deal.departure));
     return Array.from(cities).sort();
   }, [deals]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current && 
+        !dropdownRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleDealSelect = (dealId: string) => {
     navigate(`/dashboard/${dealId}`);
@@ -61,6 +81,7 @@ export default function Dashboard() {
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
               <input
+                ref={inputRef}
                 type="text"
                 placeholder="Search departure city..."
                 value={searchQuery}
@@ -69,7 +90,10 @@ export default function Dashboard() {
                 className="w-full sm:w-64 h-10 pl-12 pr-4 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-0 transition-colors"
               />
               {(showDropdown || searchQuery) && uniqueCities.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto">
+                <div 
+                  ref={dropdownRef}
+                  className="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto"
+                >
                   <div 
                     className="p-2 hover:bg-gray-50 cursor-pointer border-b"
                     onClick={() => handleCitySelect(null)}
