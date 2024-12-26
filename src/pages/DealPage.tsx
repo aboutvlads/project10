@@ -181,15 +181,23 @@ export default function DealPage() {
                 </div>
               </div>
 
+              {/* Stats */}
+              <div className="flex items-center gap-2 text-gray-600 text-sm">
+                <Heart className="w-5 h-5" />
+                <span>{deal.likes} likes</span>
+                <span className="mx-2">•</span>
+                <span>Posted {new Date(deal.created_at).toLocaleDateString()}</span>
+              </div>
+
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2">
                 <a
                   href={deal.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1"
                 >
-                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors">
+                  <button className="w-full bg-[#FFF8C8] hover:bg-[#FFE978] text-black font-medium text-lg py-4 rounded-full transition-colors">
                     Book Now
                   </button>
                 </a>
@@ -201,9 +209,9 @@ export default function DealPage() {
                       url: window.location.href
                     }).catch(console.error);
                   }}
-                  className="bg-white hover:bg-gray-50 border border-gray-200 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+                  className="bg-gray-100 hover:bg-gray-200 rounded-full w-14 h-14 flex items-center justify-center transition-colors"
                 >
-                  <Share className="w-5 h-5" />
+                  <Share className="w-6 h-6" />
                 </button>
               </div>
             </div>
