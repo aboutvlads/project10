@@ -141,28 +141,6 @@ export default function DealPage() {
 
             {/* Additional Details */}
             <div className="space-y-6">
-              <div className="flex flex-col gap-2">
-                <h2 className="text-lg font-semibold">Flight Details</h2>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-600">Departure</p>
-                    <p className="font-medium">{deal.departure_time}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Arrival</p>
-                    <p className="font-medium">{deal.arrival_time}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Duration</p>
-                    <p className="font-medium">{deal.flight_duration}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Cabin</p>
-                    <p className="font-medium">{deal.cabin_type}</p>
-                  </div>
-                </div>
-              </div>
-
               {/* Sample Dates */}
               {deal.sample_dates && (
                 <div>
