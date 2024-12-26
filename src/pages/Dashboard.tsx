@@ -22,6 +22,18 @@ export default function Dashboard() {
   }, [deals]);
 
   useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem('dashboardScrollPosition');
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition));
+      sessionStorage.removeItem('dashboardScrollPosition');
+    }
+
+    return () => {
+      sessionStorage.setItem('dashboardScrollPosition', window.scrollY.toString());
+    };
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current && 
