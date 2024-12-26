@@ -12,7 +12,7 @@ interface DealCardProps {
   originalPrice: number;
   discount: number;
   departure: string;
-  stops: string;
+  trip_type: 'oneway' | 'roundtrip';
   tags: string[];
   likes: number;
   isHot: boolean;
@@ -39,7 +39,7 @@ export default function DealCard({
   originalPrice,
   discount,
   departure,
-  stops,
+  trip_type,
   tags,
   likes,
   isHot,
@@ -106,12 +106,10 @@ export default function DealCard({
                   <span className="font-medium">From:</span>
                   <span className="ml-1">{departure}</span>
                 </span>
-                {stops && (
-                  <span className="mt-0.5 flex items-center">
-                    <span className="font-medium">Stops:</span>
-                    <span className="ml-1">{stops}</span>
-                  </span>
-                )}
+                <span className="mt-0.5 flex items-center">
+                  <span className="font-medium">Trip Type:</span>
+                  <span className="ml-1 capitalize">{trip_type}</span>
+                </span>
               </div>
             </div>
           </div>
