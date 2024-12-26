@@ -16,16 +16,10 @@ export default function Dashboard() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const filteredAirports = useMemo(() => {
-    if (!searchQuery) return airports;
-    const query = searchQuery.toLowerCase();
-    return airports.filter(
-      airport => 
-        airport.city.toLowerCase().includes(query) ||
-        airport.code.toLowerCase().includes(query) ||
-        airport.country.toLowerCase().includes(query)
-    );
-  }, [searchQuery]);
+  const uniqueCities = useMemo(() => {
+    const cities = new Set(deals.map(deal => deal.departure));
+    return Array.from(cities).sort();
+  }, [deals]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,8 +43,8 @@ export default function Dashboard() {
     navigate(`/dashboard/${dealId}`);
   };
 
-  const handleCitySelect = (airport: typeof airports[0] | null) => {
-    setSelectedCity(airport ? `${airport.code}, ${airport.city}` : null);
+  const handleCitySelect = (city: string | null) => {
+    setSelectedCity(city);
     setSearchQuery('');
     setShowDropdown(false);
   };
@@ -95,7 +89,7 @@ export default function Dashboard() {
                 onFocus={() => setShowDropdown(true)}
                 className="w-full sm:w-64 h-10 pl-12 pr-4 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-0 transition-colors"
               />
-              {(showDropdown || searchQuery) && (
+              {(showDropdown || searchQuery) && uniqueCities.length > 0 && (
                 <div 
                   ref={dropdownRef}
                   className="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto"
@@ -106,16 +100,20 @@ export default function Dashboard() {
                   >
                     Show all cities
                   </div>
-                  {filteredAirports.map((airport, index) => (
-                    <div
-                      key={airport.code}
-                      className="p-2 hover:bg-gray-50 cursor-pointer"
-                      onClick={() => handleCitySelect(airport)}
-                    >
-                      <div className="font-medium">{airport.city}, {airport.country}</div>
-                      <div className="text-sm text-gray-500">{airport.code} - {airport.name}</div>
-                    </div>
-                  ))}
+                  {uniqueCities
+                    .filter(city => 
+                      !searchQuery || 
+                      city.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((city) => (
+                      <div
+                        key={city}
+                        className="p-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        {city}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
