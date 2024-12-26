@@ -197,7 +197,7 @@ export default function DealPage() {
                   rel="noopener noreferrer"
                   className="flex-1"
                 >
-                  <button className="w-full bg-[#FFF8C8] hover:bg-[#FFE978] text-black font-medium text-lg py-4 rounded-full transition-colors">
+                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors">
                     Book Now
                   </button>
                 </a>
