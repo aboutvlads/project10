@@ -104,10 +104,8 @@ export default function DealPage() {
                   <div className="flex items-center">
                     <span className="font-medium">From:</span>
                     <span className="ml-1">{deal.departure}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="font-medium">Trip:</span>
-                    <span className="ml-1 capitalize">{deal.trip_type || 'Roundtrip'}</span>
+                    <span className="mx-2">•</span>
+                    <span className="capitalize">{deal.trip_type || 'Roundtrip'}</span>
                   </div>
                   {deal.stops && (
                     <div className="flex items-center">
