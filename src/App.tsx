@@ -7,7 +7,7 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Welcome from './pages/Welcome';
 import AuthCallback from './pages/AuthCallback';
-import LandingPage from './landing-page/LandingPage';
+import LandingPage from './pages/LandingPage';
 
 export default function App() {
   return (
