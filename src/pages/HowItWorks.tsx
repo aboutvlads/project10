@@ -45,7 +45,7 @@ export default function HowItWorks() {
         <div className="flex flex-col sm:flex-row sm:justify-between w-full px-4 sm:px-16 md:px-32 lg:px-48 gap-12 sm:gap-8">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center sm:flex-1">
-              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center p-5 sm:p-7">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center p-6 sm:p-9">
                 {feature.icon}
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold mb-3">{feature.title}</h3>
