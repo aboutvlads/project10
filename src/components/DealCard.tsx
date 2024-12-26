@@ -17,6 +17,7 @@ interface DealCardProps {
   likes: number;
   isHot: boolean;
   type: string;
+  trip_type: string;
   onSelect?: (id: string) => void;
   departureTime: string;
   arrivalTime: string;
@@ -44,6 +45,7 @@ export default function DealCard({
   likes,
   isHot,
   type,
+  trip_type,
   onSelect,
   departureTime,
   arrivalTime,
@@ -105,6 +107,10 @@ export default function DealCard({
                 <span className="flex items-center">
                   <span className="font-medium">From:</span>
                   <span className="ml-1">{departure}</span>
+                </span>
+                <span className="flex items-center mt-0.5">
+                  <span className="font-medium">Trip:</span>
+                  <span className="ml-1 capitalize">{trip_type || 'Roundtrip'}</span>
                 </span>
                 {stops && (
                   <span className="mt-0.5 flex items-center">

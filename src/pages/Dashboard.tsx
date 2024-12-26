@@ -124,6 +124,7 @@ export default function Dashboard() {
                 likes={deal.likes}
                 isHot={deal.is_hot}
                 type={deal.type}
+                trip_type={deal.trip_type}
                 onSelect={() => handleDealSelect(deal.id)}
                 departureTime={deal.departure_time}
                 arrivalTime={deal.arrival_time}

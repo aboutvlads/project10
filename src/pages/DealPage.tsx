@@ -28,6 +28,7 @@ interface Deal {
   created_at: string;
   sample_dates?: string;
   deal_screenshot_url?: string;
+  trip_type: string;
 }
 
 export default function DealPage() {
@@ -99,29 +100,32 @@ export default function DealPage() {
                 <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2 mb-1">
                   {deal.destination}, {deal.country} <span>{deal.flag}</span>
                 </h1>
-                <div className="space-y-0.5">
-                  <p className="text-sm text-gray-600">From: {deal.departure}</p>
-                  <p className="text-sm text-gray-600">{deal.stops}</p>
+                <div className="flex flex-col text-sm sm:text-base text-gray-600 gap-1">
+                  <div className="flex items-center">
+                    <span className="font-medium">From:</span>
+                    <span className="ml-1">{deal.departure}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-medium">Trip:</span>
+                    <span className="ml-1 capitalize">{deal.trip_type || 'Roundtrip'}</span>
+                  </div>
+                  {deal.stops && (
+                    <div className="flex items-center">
+                      <span className="font-medium">Stops:</span>
+                      <span className="ml-1">{deal.stops}</span>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="flex sm:hidden flex-col items-end">
-                <p className="text-xl font-bold">€{deal.price}</p>
-                <p className="text-sm text-gray-400 line-through">€{deal.original_price}</p>
-                <p className="text-xs text-green-500">
-                  {deal.discount}% OFF
-                </p>
+              <div className="text-right">
+                <p className="text-2xl sm:text-4xl font-bold">€{deal.price}</p>
+                <p className="text-sm sm:text-base text-gray-400 line-through">€{deal.original_price}</p>
               </div>
             </div>
+
             <div className="space-y-1">
               <p className="text-sm sm:text-base text-gray-600">{deal.cabin_type}</p>
             </div>
-          </div>
-          <div className="hidden sm:block text-right">
-            <p className="text-2xl sm:text-3xl font-bold">€{deal.price}</p>
-            <p className="text-gray-400 line-through">€{deal.original_price}</p>
-            <p className="text-green-500 text-xs sm:text-sm">
-              Save €{deal.original_price - deal.price} ({deal.discount}% OFF)
-            </p>
           </div>
         </div>
 
