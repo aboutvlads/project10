@@ -40,8 +40,6 @@ export default function DealPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-
     const fetchDeal = async () => {
       try {
         if (!id) return;
