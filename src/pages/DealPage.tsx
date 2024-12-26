@@ -88,33 +88,33 @@ export default function DealPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Image */}
-      <div className="relative h-[30vh] sm:h-[50vh] w-full">
-        <button 
-          onClick={() => navigate('/dashboard')}
-          className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
-        >
-          <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
-        <img
-          src={deal.image_url}
-          alt={deal.destination}
-          className="w-full h-full object-cover"
-        />
-        {deal.is_hot && (
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full flex items-center gap-1">
-            <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-xs sm:text-sm font-medium">Hot Deal</span>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8 flex justify-center">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Hero Image */}
+        <div className="relative h-[30vh] sm:h-[40vh] w-full">
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
+          >
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+          <img
+            src={deal.image_url}
+            alt={deal.destination}
+            className="w-full h-full object-cover"
+          />
+          {deal.is_hot && (
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full flex items-center gap-1">
+              <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium">Hot Deal</span>
+            </div>
+          )}
+        </div>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-0 mb-6">
-          <div className="w-full">
-            <div className="flex items-start justify-between gap-2 mb-2">
+        {/* Content */}
+        <div className="px-4 py-6 sm:p-8">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2 mb-2">
                   {deal.destination}, {deal.country} <span className="text-2xl sm:text-4xl">{deal.flag}</span>
@@ -124,7 +124,7 @@ export default function DealPage() {
                     <span className="font-medium">From:</span>
                     <span className="ml-1">{deal.departure}</span>
                     <span className="mx-2">•</span>
-                    <span className="capitalize">{formatTripType(deal.trip_type)}</span>
+                    <span>{formatTripType(deal.trip_type)}</span>
                   </div>
                   <div className="flex items-center">
                     <span>{deal.dates}</span>
@@ -139,82 +139,50 @@ export default function DealPage() {
               </div>
             </div>
 
-            <div className="space-y-1">
-              <p className="text-sm sm:text-base text-gray-600">{deal.cabin_type}</p>
+            {/* Additional Details */}
+            <div className="space-y-4">
+              <div className="flex flex-col gap-2">
+                <h2 className="text-lg font-semibold">Flight Details</h2>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-600">Departure</p>
+                    <p className="font-medium">{deal.departure_time}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Arrival</p>
+                    <p className="font-medium">{deal.arrival_time}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Duration</p>
+                    <p className="font-medium">{deal.flight_duration}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Cabin</p>
+                    <p className="font-medium">{deal.cabin_type}</p>
+                  </div>
+                </div>
+              </div>
+
+              {deal.sample_dates && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Sample Dates</h2>
+                  <p className="text-sm text-gray-600">{deal.sample_dates}</p>
+                </div>
+              )}
+
+              {/* Book Now Button */}
+              <a
+                href={deal.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full"
+              >
+                <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3 px-6 rounded-lg transition-colors">
+                  Book Now
+                </button>
+              </a>
             </div>
           </div>
-        </div>
-
-        {/* Sample Dates */}
-        {deal.sample_dates && (
-          <div className="mb-6 sm:mb-8">
-            <p className="text-gray-600 mb-2">Sample Dates</p>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm whitespace-pre-line">{deal.sample_dates}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Deal Screenshot */}
-        {deal.deal_screenshot_url && (
-          <div className="mb-6 sm:mb-8">
-            <p className="text-gray-600 mb-2">Deal Screenshot</p>
-            <img
-              src={deal.deal_screenshot_url}
-              alt="Deal Screenshot"
-              className="w-full rounded-lg shadow-md"
-            />
-          </div>
-        )}
-
-        {/* Posted By */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-gray-600 mb-2">Posted by</p>
-          <div className="flex items-center gap-3">
-            <img
-              src={deal.posted_by_avatar}
-              alt={deal.posted_by}
-              className="w-10 h-10 rounded-full"
-            />
-            <div>
-              <p className="font-semibold">{deal.posted_by}</p>
-              <p className="text-sm text-gray-600">{deal.posted_by_description}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="flex items-center gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-1 text-gray-600">
-            <Heart className="w-5 h-5" />
-            <span>{deal.likes} likes</span>
-          </div>
-          <div className="text-sm text-gray-500">
-            Posted {new Date(deal.created_at).toLocaleDateString()}
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <Button
-            variant="secondary"
-            className="flex-1"
-            onClick={() => window.open(deal.url, '_blank')}
-          >
-            Book Now
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => {
-              navigator.share({
-                title: `Flight Deal to ${deal.destination}`,
-                text: `Check out this flight deal to ${deal.destination} for €${deal.price}!`,
-                url: window.location.href
-              }).catch(console.error);
-            }}
-          >
-            <Share className="w-5 h-5" />
-          </Button>
         </div>
       </div>
     </div>
