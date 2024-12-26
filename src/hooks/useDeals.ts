@@ -37,12 +37,24 @@ export function useDeals(filterCity?: string) {
 
         // Sort deals by user's home city first if no filter is applied
         const sortedDeals = dealsWithTags.sort((a, b) => {
-          const cityToMatch = filterCity || userProfile?.home_airport?.city;
+          if (!userProfile?.home_airport) return 0;
+          
+          // Use the city name for comparison
+          const homeCity = userProfile.home_airport.city;
+          const cityToMatch = filterCity || homeCity;
           
           if (!cityToMatch) return 0;
           
-          const aDepartsFromCity = a.departure.toLowerCase() === cityToMatch.toLowerCase();
-          const bDepartsFromCity = b.departure.toLowerCase() === cityToMatch.toLowerCase();
+          // Log values for debugging
+          console.log('Comparing cities:', {
+            dealDeparture: a.departure,
+            cityToMatch: cityToMatch,
+            homeAirport: userProfile.home_airport
+          });
+          
+          // Compare with just the city names
+          const aDepartsFromCity = a.departure.toLowerCase().includes(cityToMatch.toLowerCase());
+          const bDepartsFromCity = b.departure.toLowerCase().includes(cityToMatch.toLowerCase());
           
           if (aDepartsFromCity && !bDepartsFromCity) return -1;
           if (!aDepartsFromCity && bDepartsFromCity) return 1;
@@ -52,7 +64,9 @@ export function useDeals(filterCity?: string) {
 
         // Filter by city if specified
         const filteredDeals = filterCity 
-          ? sortedDeals.filter(deal => deal.departure.toLowerCase() === filterCity.toLowerCase())
+          ? sortedDeals.filter(deal => 
+              deal.departure.toLowerCase().includes(filterCity.toLowerCase())
+            )
           : sortedDeals;
 
         setDeals(filteredDeals);
@@ -64,7 +78,7 @@ export function useDeals(filterCity?: string) {
     }
 
     fetchDeals();
-  }, [supabase, userProfile?.home_airport?.city, filterCity]);
+  }, [supabase, userProfile?.home_airport, filterCity]);
 
   return { deals, loading, error };
 }
