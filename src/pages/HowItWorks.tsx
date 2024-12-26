@@ -38,7 +38,7 @@ export default function HowItWorks() {
         </h1>
         <p className="text-sm sm:text-base text-[#757575]">
           We keep a close eye on prices from your airport to destinations all over the world.
-          When the price drops, you know.
+          When we find new deals, you know.
         </p>
       </div>
 
