@@ -6,20 +6,33 @@ import DealCard from '../components/DealCard';
 import { useDeals } from '../hooks/useDeals';
 import { airports } from './HomeAirport';
 
+const europeanAirports = airports.filter(airport => airport.region === 'Europe');
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
+  const [showAirportDropdown, setShowAirportDropdown] = useState(false);
   const { deals, loading, error } = useDeals(selectedCity);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const airportInputRef = useRef<HTMLInputElement>(null);
 
   const uniqueCities = useMemo(() => {
     const cities = new Set(deals.map(deal => deal.departure));
     return Array.from(cities).sort();
   }, [deals]);
+
+  const filteredAirports = europeanAirports.filter(airport => 
+    airport.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    airport.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    airport.country.toLowerCase().includes(searchTerm.toLowerCase())
+  ).slice(0, 5);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,6 +43,9 @@ export default function Dashboard() {
         !inputRef.current.contains(event.target as Node)
       ) {
         setShowDropdown(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowAirportDropdown(false);
       }
     };
 
@@ -47,6 +63,12 @@ export default function Dashboard() {
     setSelectedCity(city);
     setSearchQuery('');
     setShowDropdown(false);
+  };
+
+  const handleAirportSelect = (airport: typeof europeanAirports[0]) => {
+    setSelectedAirport(airport.code);
+    setSearchTerm(`${airport.city} (${airport.code})`);
+    setShowAirportDropdown(false);
   };
 
   if (loading) {
@@ -117,6 +139,37 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+          </div>
+          <div className="relative flex-1" ref={searchRef}>
+            <input
+              ref={airportInputRef}
+              type="text"
+              placeholder="Search by city or airport..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowAirportDropdown(true);
+              }}
+              onClick={() => setShowAirportDropdown(true)}
+              className="w-full h-10 pl-4 pr-4 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-0 transition-colors"
+            />
+            
+            {showAirportDropdown && searchTerm && (
+              <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200">
+                {filteredAirports.map((airport) => (
+                  <button
+                    key={airport.code}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-50 focus:outline-none"
+                    onClick={() => handleAirportSelect(airport)}
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-medium">{airport.city}</span>
+                      <span className="text-sm text-gray-500">{airport.code} • {airport.country}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

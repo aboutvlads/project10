@@ -4,7 +4,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import RegionFilter from '../components/RegionFilter';
 import DealCard from '../components/DealCard';
-import { dealsByRegion } from '../data/deals';
+import { europeanAirports } from '../data/airports';
 import { useNavigate } from 'react-router-dom';
 import { useScrollTop } from '../hooks/useScrollTop';
 
@@ -12,7 +12,17 @@ export default function AirportSelection() {
   const navigate = useNavigate();
   useScrollTop();
   const [selectedRegion, setSelectedRegion] = useState('Europe');
-  const deals = dealsByRegion[selectedRegion] || dealsByRegion.Europe;
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredAirports = europeanAirports.filter(airport => 
+    airport.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    airport.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    airport.country.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleAirportSelect = async (code: string) => {
+    navigate('/home-airport');
+  };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-white">
@@ -35,21 +45,20 @@ export default function AirportSelection() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-10">
-            {deals.map((deal, index) => (
+            {filteredAirports.map((airport, index) => (
               <DealCard
                 key={index}
-                {...deal}
-                destination={deal.city}
-                departure={deal.from.replace('From ', '')}
-                stops={deal.tripType}
+                destination={airport.city}
+                departure={airport.code}
+                stops={airport.country}
                 likes={Math.floor(Math.random() * 50) + 10}
                 isHot={Math.random() > 0.7}
                 created_at={new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()}
-                flag={deal.country === 'United Kingdom' ? '🇬🇧' : 
-                      deal.country === 'France' ? '🇫🇷' :
-                      deal.country === 'Italy' ? '🇮🇹' :
-                      deal.country === 'Portugal' ? '🇵🇹' :
-                      deal.country === 'Spain' ? '🇪🇸' :
+                flag={airport.country === 'United Kingdom' ? '🇬🇧' : 
+                      airport.country === 'France' ? '🇫🇷' :
+                      airport.country === 'Italy' ? '🇮🇹' :
+                      airport.country === 'Portugal' ? '🇵🇹' :
+                      airport.country === 'Spain' ? '🇪🇸' :
                       ''}
                 isBusinessClass={false}
               />
