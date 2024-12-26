@@ -120,6 +120,7 @@ export default function Dashboard() {
                 discount={deal.discount}
                 departure={deal.departure}
                 stops={deal.stops}
+                dates={deal.dates}
                 tags={[]}
                 likes={deal.likes}
                 isHot={deal.is_hot}

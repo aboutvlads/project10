@@ -11,6 +11,7 @@ interface Deal {
   flag: string;
   departure: string;
   stops: string;
+  dates: string;
   cabin_type: string;
   price: number;
   original_price: number;
@@ -68,6 +69,11 @@ export default function DealPage() {
     );
   }
 
+  // Format stops to show only "direct" or "X+ stop"
+  const formattedStops = deal.stops?.toLowerCase() === 'direct' 
+    ? 'Direct'
+    : deal.stops ? `${deal.stops.replace(/[^0-9]/g, '')}+ stop` : 'Direct';
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Image */}
@@ -107,12 +113,11 @@ export default function DealPage() {
                     <span className="mx-2">•</span>
                     <span className="capitalize">{deal.trip_type || 'Roundtrip'}</span>
                   </div>
-                  {deal.stops && (
-                    <div className="flex items-center">
-                      <span className="font-medium">Stops:</span>
-                      <span className="ml-1">{deal.stops}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center">
+                    <span>{deal.dates}</span>
+                    <span className="mx-2">•</span>
+                    <span>{formattedStops}</span>
+                  </div>
                 </div>
               </div>
               <div className="text-right">

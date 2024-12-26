@@ -13,6 +13,7 @@ interface DealCardProps {
   discount: number;
   departure: string;
   stops: string;
+  dates: string;
   tags: string[];
   likes: number;
   isHot: boolean;
@@ -41,6 +42,7 @@ export default function DealCard({
   discount,
   departure,
   stops,
+  dates,
   tags,
   likes,
   isHot,
@@ -58,6 +60,11 @@ export default function DealCard({
   isBusinessClass
 }: DealCardProps) {
   const discountPercent = Math.round((1 - price / originalPrice) * 100);
+  
+  // Format stops to show only "direct" or "X+ stop"
+  const formattedStops = stops?.toLowerCase() === 'direct' 
+    ? 'Direct'
+    : stops ? `${stops.replace(/[^0-9]/g, '')}+ stop` : 'Direct';
 
   return (
     <div 
@@ -110,12 +117,11 @@ export default function DealCard({
                   <span className="mx-2">•</span>
                   <span className="capitalize">{trip_type || 'Roundtrip'}</span>
                 </span>
-                {stops && (
-                  <span className="mt-0.5 flex items-center">
-                    <span className="font-medium">Stops:</span>
-                    <span className="ml-1">{stops}</span>
-                  </span>
-                )}
+                <span className="flex items-center">
+                  <span>{dates}</span>
+                  <span className="mx-2">•</span>
+                  <span>{formattedStops}</span>
+                </span>
               </div>
             </div>
           </div>
