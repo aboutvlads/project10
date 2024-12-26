@@ -9,22 +9,22 @@ export default function HowItWorks() {
 
   const features = [
     {
-      icon: <Plane />,
+      icon: <Plane className="w-full h-full" />,
       title: 'Cheapest flight deals',
       description: 'We find flight deals that are up to 70% - 80% off their usual prices'
     },
     {
-      icon: <Zap />,
+      icon: <Zap className="w-full h-full" />,
       title: 'Only the best airlines',
       description: 'We thoroughly analyze the airline ratings, service and prices before sending the deals to you'
     },
     {
-      icon: <Timer />,
+      icon: <Timer className="w-full h-full" />,
       title: 'Save time & money',
       description: 'Plan your itinerary and pack your bags, while we find the best flight deal for you'
     },
     {
-      icon: <Link />,
+      icon: <Link className="w-full h-full" />,
       title: 'Easy booking',
       description: "You're just one click away from your dream vacation"
     }
@@ -45,10 +45,8 @@ export default function HowItWorks() {
         <div className="flex flex-col sm:flex-row sm:justify-between w-full px-4 sm:px-16 md:px-32 lg:px-48 gap-12 sm:gap-8">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center sm:flex-1">
-              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 text-[#1B1B1B]">
-                  {feature.icon}
-                </div>
+              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center p-5 sm:p-7">
+                {feature.icon}
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold mb-3">{feature.title}</h3>
               <p className="text-base sm:text-lg text-[#757575] max-w-sm">{feature.description}</p>
