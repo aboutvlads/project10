@@ -103,8 +103,8 @@ export default function DealPage() {
           <div className="w-full">
             <div className="flex items-start justify-between gap-2 mb-2">
               <div>
-                <h1 className="text-2xl sm:text-4xl font-bold flex items-center gap-2 mb-2">
-                  {deal.destination}, {deal.country} <span className="text-3xl sm:text-5xl">{deal.flag}</span>
+                <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2 mb-2">
+                  {deal.destination}, {deal.country} <span className="text-2xl sm:text-4xl">{deal.flag}</span>
                 </h1>
                 <div className="flex flex-col text-sm sm:text-base text-gray-600 gap-1">
                   <div className="flex items-center">
@@ -121,7 +121,7 @@ export default function DealPage() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-3xl sm:text-5xl font-bold">€{deal.price}</p>
+                <p className="text-2xl sm:text-4xl font-bold">€{deal.price}</p>
                 <p className="text-sm sm:text-base text-gray-400 line-through">€{deal.original_price}</p>
               </div>
             </div>
