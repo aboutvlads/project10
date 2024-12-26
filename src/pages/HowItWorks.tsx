@@ -32,29 +32,29 @@ export default function HowItWorks() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center pt-16 p-4">
-      <div className="flex flex-col items-center gap-6 px-4 sm:px-8 pt-12 pb-16">
+      <div className="flex flex-col items-center gap-6 px-4 sm:px-8 pt-12 pb-8">
         <h1 className="text-2xl sm:text-4xl font-bold text-center">
           How it works
         </h1>
-        <p className="text-base sm:text-lg text-[#757575] text-center max-w-3xl">
+        <p className="text-base sm:text-lg text-[#757575] text-center max-w-3xl mb-8">
           We keep a close eye on prices from your airport to destinations all over the world.
           When we find new deals, you know.
         </p>
-      </div>
 
-      {/* Steps */}
-      <div className="flex flex-col sm:flex-row sm:justify-between px-4 sm:px-16 md:px-32 lg:px-48 gap-12 sm:gap-8">
-        {features.map((feature, index) => (
-          <div key={index} className="flex flex-col items-center text-center sm:flex-1">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 text-[#1B1B1B]">
-                {feature.icon}
+        {/* Steps */}
+        <div className="flex flex-col sm:flex-row sm:justify-between w-full px-4 sm:px-16 md:px-32 lg:px-48 gap-12 sm:gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="flex flex-col items-center text-center sm:flex-1">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 text-[#1B1B1B]">
+                  {feature.icon}
+                </div>
               </div>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3">{feature.title}</h3>
+              <p className="text-base sm:text-lg text-[#757575] max-w-sm">{feature.description}</p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-semibold mb-3">{feature.title}</h3>
-            <p className="text-base sm:text-lg text-[#757575] max-w-sm">{feature.description}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div className="flex justify-center mt-12 mb-8">
