@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft, Clock, Share, Flame, Heart } from 'lucide-react';
 import Button from '../components/Button';
-import Image from 'next/image';
 
 interface Deal {
   id: string;
@@ -31,8 +30,6 @@ interface Deal {
   sample_dates?: string;
   deal_screenshot_url?: string;
   trip_type: string;
-  hero_image?: string;
-  flag_emoji?: string;
 }
 
 export default function DealPage() {
@@ -91,52 +88,64 @@ export default function DealPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Desktop Layout */}
-      <div className="max-w-[1440px] mx-auto">
-        <div className="grid lg:grid-cols-2 gap-0">
-          {/* Left Column - Hero Image */}
-          <div className="relative h-[30vh] lg:h-screen w-full">
-            <Image
-              src={deal.hero_image || "/default-hero.jpg"}
-              alt={`${deal.destination} hero image`}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8 flex justify-center">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Hero Image */}
+        <div className="relative h-[30vh] sm:h-[40vh] w-full">
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50"
+          >
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+          <img
+            src={deal.image_url}
+            alt={deal.destination}
+            className="w-full h-full object-cover"
+          />
+          {deal.is_hot && (
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full flex items-center gap-1">
+              <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium">Hot Deal</span>
+            </div>
+          )}
+        </div>
 
-          {/* Right Column - Content */}
-          <div className="lg:h-screen lg:overflow-auto">
-            <div className="px-4 py-6 sm:p-8 lg:p-12 space-y-6">
-              {/* Header */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-                      {deal.destination}
-                    </h1>
-                    <div className="flex items-center gap-2 mt-1 text-gray-600">
-                      <span>{deal.country}</span>
-                      <span>{deal.flag}</span>
-                    </div>
+        {/* Content */}
+        <div className="px-4 py-6 sm:p-8">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h1 className="text-xl sm:text-3xl font-bold flex items-center gap-2 mb-2">
+                  {deal.destination}, {deal.country} <span className="text-2xl sm:text-4xl">{deal.flag}</span>
+                </h1>
+                <div className="flex flex-col text-sm sm:text-base text-gray-600 gap-1">
+                  <div className="flex items-center">
+                    <span className="font-medium">From:</span>
+                    <span className="ml-1">{deal.departure}</span>
+                    <span className="mx-2">•</span>
+                    <span>{formatTripType(deal.trip_type)}</span>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-                      €{deal.price}
-                    </div>
-                    <div className="text-sm text-gray-600 mt-1">
-                      {formatTripType(deal.trip_type)}
-                    </div>
+                  <div className="flex items-center">
+                    <span>{deal.dates}</span>
+                    <span className="mx-2">•</span>
+                    <span>{formattedStops}</span>
                   </div>
                 </div>
               </div>
+              <div className="text-right">
+                <p className="text-2xl sm:text-4xl font-bold">€{deal.price}</p>
+                <p className="text-sm sm:text-base text-gray-400 line-through">€{deal.original_price}</p>
+              </div>
+            </div>
 
+            {/* Additional Details */}
+            <div className="space-y-6">
               {/* Sample Dates */}
               {deal.sample_dates && (
                 <div>
                   <h2 className="text-lg font-semibold mb-2">Sample Dates</h2>
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <div className="bg-gray-50 rounded-lg p-4">
                     <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
                       {deal.sample_dates}
                     </p>
@@ -148,20 +157,18 @@ export default function DealPage() {
               {deal.deal_screenshot_url && (
                 <div>
                   <h2 className="text-lg font-semibold mb-2">Deal Screenshot</h2>
-                  <div className="bg-white rounded-xl p-2 shadow-sm">
-                    <img
-                      src={deal.deal_screenshot_url}
-                      alt="Deal Screenshot"
-                      className="w-full rounded-lg"
-                    />
-                  </div>
+                  <img
+                    src={deal.deal_screenshot_url}
+                    alt="Deal Screenshot"
+                    className="w-full rounded-lg shadow-md"
+                  />
                 </div>
               )}
 
               {/* Found By */}
               <div>
                 <h2 className="text-lg font-semibold mb-2">Found By</h2>
-                <div className="flex items-center gap-3 bg-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-4">
                   <img
                     src={deal.posted_by_avatar}
                     alt={deal.posted_by}
@@ -183,7 +190,7 @@ export default function DealPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-2 lg:sticky lg:bottom-8">
+              <div className="flex gap-2">
                 <a
                   href={deal.url}
                   target="_blank"
