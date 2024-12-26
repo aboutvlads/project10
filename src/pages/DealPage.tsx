@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft, Clock, Share, Flame, Heart } from 'lucide-react';
 import Button from '../components/Button';
-import { useDealLikes } from '../hooks/useDealLikes';
 
 interface Deal {
   id: string;
@@ -34,32 +33,35 @@ interface Deal {
 }
 
 export default function DealPage() {
-  const params = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { supabase } = useAuth();
-  const { data: deal, isLoading } = useDeal(params.id);
-  const { likesCount, toggleLike, isLoading: isLikesLoading } = useDealLikes(params.id || '', deal?.likes || 0);
+  const [deal, setDeal] = useState<Deal | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDeal = async () => {
       try {
-        if (!params.id) return;
+        if (!id) return;
         const { data, error } = await supabase
           .from('deals')
           .select('*')
-          .eq('id', params.id)
+          .eq('id', id)
           .single();
 
         if (error) throw error;
+        setDeal(data);
       } catch (error) {
         console.error('Error fetching deal:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDeal();
-  }, [params.id, supabase]);
+  }, [id, supabase]);
 
-  if (isLoading || !deal) {
+  if (loading || !deal) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
@@ -181,16 +183,8 @@ export default function DealPage() {
 
               {/* Stats */}
               <div className="flex items-center gap-2 text-gray-600 text-sm">
-                <button
-                  onClick={toggleLike}
-                  disabled={isLikesLoading}
-                  className="flex items-center gap-2 hover:text-red-500 transition-colors disabled:opacity-50"
-                >
-                  <Heart 
-                    className={`w-5 h-5 ${isLikesLoading ? 'fill-red-500 text-red-500' : ''}`} 
-                  />
-                  <span>{likesCount} likes</span>
-                </button>
+                <Heart className="w-5 h-5" />
+                <span>{deal.likes} likes</span>
                 <span className="mx-2">•</span>
                 <span>Posted {new Date(deal.created_at).toLocaleDateString()}</span>
               </div>
