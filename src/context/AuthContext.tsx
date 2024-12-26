@@ -73,18 +73,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      const redirectPath = localStorage.getItem('redirectPath');
-      if (redirectPath) {
-        localStorage.removeItem('redirectPath');
-        navigate(redirectPath);
-      } else {
-        navigate('/app/dashboard');
-      }
-    }
-  }, [user, navigate]);
-
   // Fetch user profile whenever user changes
   useEffect(() => {
     const checkOnboardingStatus = async () => {
@@ -108,7 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const currentPath = location.pathname;
         if (currentPath === '/' || currentPath === '/auth/callback') {
           if (onboardingData?.onboarding_completed) {
-            navigate('/app/dashboard');
+            navigate('/dashboard');
           } else {
             navigate('/onboarding');
           }

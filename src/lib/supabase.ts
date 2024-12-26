@@ -5,12 +5,11 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
-    flowType: 'pkce',
+    persistSession: true,
+    storageKey: 'tripwingz-auth',
+    storage: window.localStorage,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    persistSession: true,
-    redirectTo: window.location.origin + '/app/auth/callback',
-    storageKey: 'tripwingz-auth',
-    storage: window.localStorage
+    flowType: 'pkce'
   }
 });
