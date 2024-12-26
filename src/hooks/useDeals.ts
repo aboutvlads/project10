@@ -6,11 +6,11 @@ type Deal = Database['public']['Tables']['deals']['Row'] & {
   tags: string[];
 };
 
-export function useDeals() {
+export function useDeals(filterCity?: string) {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { supabase } = useAuth();
+  const { supabase, userProfile } = useAuth();
 
   useEffect(() => {
     async function fetchDeals() {
@@ -35,7 +35,27 @@ export function useDeals() {
             .map(tag => tag.tag)
         }));
 
-        setDeals(dealsWithTags);
+        // Sort deals by user's home city first if no filter is applied
+        const sortedDeals = dealsWithTags.sort((a, b) => {
+          const cityToMatch = filterCity || userProfile?.home_airport?.city;
+          
+          if (!cityToMatch) return 0;
+          
+          const aDepartsFromCity = a.departure.toLowerCase() === cityToMatch.toLowerCase();
+          const bDepartsFromCity = b.departure.toLowerCase() === cityToMatch.toLowerCase();
+          
+          if (aDepartsFromCity && !bDepartsFromCity) return -1;
+          if (!aDepartsFromCity && bDepartsFromCity) return 1;
+          
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
+
+        // Filter by city if specified
+        const filteredDeals = filterCity 
+          ? sortedDeals.filter(deal => deal.departure.toLowerCase() === filterCity.toLowerCase())
+          : sortedDeals;
+
+        setDeals(filteredDeals);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -44,7 +64,7 @@ export function useDeals() {
     }
 
     fetchDeals();
-  }, [supabase]);
+  }, [supabase, userProfile?.home_airport?.city, filterCity]);
 
   return { deals, loading, error };
 }

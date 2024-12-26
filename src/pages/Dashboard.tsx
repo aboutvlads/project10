@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ChevronDown, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DealCard from '../components/DealCard';
 import { useDeals } from '../hooks/useDeals';
+import { airports } from './HomeAirport';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { deals, loading, error } = useDeals();
-  const [sortBy] = useState('Latest');
+  const { userProfile } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const { deals, loading, error } = useDeals(selectedCity);
+
+  const uniqueCities = useMemo(() => {
+    const cities = new Set(deals.map(deal => deal.departure));
+    return Array.from(cities).sort();
+  }, [deals]);
 
   const handleDealSelect = (dealId: string) => {
     navigate(`/dashboard/${dealId}`);
+  };
+
+  const handleCitySelect = (city: string | null) => {
+    setSelectedCity(city);
+    setSearchQuery('');
+    setShowDropdown(false);
   };
 
   if (loading) {
@@ -37,14 +52,47 @@ export default function Dashboard() {
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Available Deals</h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1">
-              Personalized flight deals based on your preferences
+              {selectedCity 
+                ? `Showing deals from ${selectedCity}`
+                : `Showing all deals, prioritizing deals from ${userProfile?.home_airport?.city || 'your home city'}`}
             </p>
           </div>
           <div className="relative">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm">
-              Sort by {sortBy}
-              <ChevronDown className="w-4 h-4" />
-            </button>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search departure city..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowDropdown(true)}
+                className="w-full sm:w-64 h-10 pl-12 pr-4 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-0 transition-colors"
+              />
+              {(showDropdown || searchQuery) && uniqueCities.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto">
+                  <div 
+                    className="p-2 hover:bg-gray-50 cursor-pointer border-b"
+                    onClick={() => handleCitySelect(null)}
+                  >
+                    Show all cities
+                  </div>
+                  {uniqueCities
+                    .filter(city => 
+                      !searchQuery || 
+                      city.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((city) => (
+                      <div
+                        key={city}
+                        className="p-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        {city}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -52,7 +100,9 @@ export default function Dashboard() {
           <div className="bg-white rounded-xl p-8 text-center shadow-lg">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No deals found</h3>
             <p className="text-gray-600">
-              We'll notify you when new deals matching your preferences become available.
+              {selectedCity 
+                ? `No deals available from ${selectedCity} at the moment.`
+                : "We'll notify you when new deals matching your preferences become available."}
             </p>
           </div>
         ) : (
