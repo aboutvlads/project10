@@ -74,6 +74,19 @@ export default function DealPage() {
     ? 'Direct'
     : deal.stops ? `${deal.stops.replace(/[^0-9]/g, '')}+ stop` : 'Direct';
 
+  // Format trip type
+  const formatTripType = (type: string) => {
+    if (!type) return 'Round trip';
+    switch (type.toLowerCase()) {
+      case 'oneway':
+        return 'One way';
+      case 'roundtrip':
+        return 'Round trip';
+      default:
+        return 'Round trip';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Image */}
@@ -111,7 +124,7 @@ export default function DealPage() {
                     <span className="font-medium">From:</span>
                     <span className="ml-1">{deal.departure}</span>
                     <span className="mx-2">•</span>
-                    <span className="capitalize">{deal.trip_type || 'Roundtrip'}</span>
+                    <span className="capitalize">{formatTripType(deal.trip_type)}</span>
                   </div>
                   <div className="flex items-center">
                     <span>{deal.dates}</span>

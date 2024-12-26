@@ -66,6 +66,19 @@ export default function DealCard({
     ? 'Direct'
     : stops ? `${stops.replace(/[^0-9]/g, '')}+ stop` : 'Direct';
 
+  // Format trip type
+  const formatTripType = (type: string) => {
+    if (!type) return 'Round trip';
+    switch (type.toLowerCase()) {
+      case 'oneway':
+        return 'One way';
+      case 'roundtrip':
+        return 'Round trip';
+      default:
+        return 'Round trip';
+    }
+  };
+
   return (
     <div 
       className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-transform hover:scale-[1.02]"
@@ -115,7 +128,7 @@ export default function DealCard({
                   <span className="font-medium">From:</span>
                   <span className="ml-1">{departure}</span>
                   <span className="mx-2">•</span>
-                  <span className="capitalize">{trip_type || 'Roundtrip'}</span>
+                  <span>{formatTripType(trip_type)}</span>
                 </span>
                 <span className="flex items-center">
                   <span>{dates}</span>
