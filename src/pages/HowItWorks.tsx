@@ -31,12 +31,12 @@ export default function HowItWorks() {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center pt-8 p-4">
-      <div className="flex flex-col items-center gap-4 px-4 sm:px-8 pt-6 pb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-center">
+    <div className="min-h-screen bg-white flex flex-col items-center pt-16 p-4">
+      <div className="flex flex-col items-center px-4 sm:px-8 pt-12">
+        <h1 className="text-2xl sm:text-4xl font-bold text-center mb-4">
           How it works
         </h1>
-        <p className="text-base sm:text-lg text-[#757575] text-center max-w-3xl mb-6">
+        <p className="text-base sm:text-lg text-[#757575] text-center max-w-3xl mb-12">
           We keep a close eye on prices from your airport to destinations all over the world.
           When we find new deals, you know.
         </p>
