@@ -105,9 +105,9 @@ export default function DealCard({
         <div className="flex justify-between items-start mb-2 sm:mb-3">
           <div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
-                <h3 className="text-base sm:text-lg font-semibold truncate">
-                  {destination}, {country} <span className="text-lg sm:text-xl">{flag}</span>
+              <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
+                <h3 className="text-xl sm:text-2xl font-semibold truncate">
+                  {destination}, {country} <span className="text-2xl sm:text-3xl">{flag}</span>
                 </h3>
               </div>
               <div className="flex flex-col text-xs sm:text-sm text-gray-600">
@@ -126,7 +126,7 @@ export default function DealCard({
             </div>
           </div>
           <div className="text-right flex flex-col items-end">
-            <p className="text-base sm:text-lg font-bold">€{price}</p>
+            <p className="text-xl sm:text-2xl font-bold">€{price}</p>
             <p className="text-xs sm:text-sm text-gray-400 line-through">€{originalPrice}</p>
           </div>
         </div>
