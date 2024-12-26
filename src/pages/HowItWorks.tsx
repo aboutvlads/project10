@@ -31,33 +31,33 @@ export default function HowItWorks() {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center pt-16 p-4">
-      <div className="flex flex-col items-center gap-4 px-4 sm:px-8 pt-8 pb-12">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center">
+    <div className="min-h-screen bg-white flex flex-col items-center pt-8 sm:pt-12">
+      <div className="flex flex-col items-center gap-2 sm:gap-3 px-4 sm:px-8 pb-6 sm:pb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-center">
           How it works
         </h1>
-        <p className="text-sm sm:text-base text-[#757575] text-center max-w-2xl">
+        <p className="text-sm text-[#757575] text-center max-w-2xl">
           We keep a close eye on prices from your airport to destinations all over the world.
           When we find new deals, you know.
         </p>
       </div>
 
       {/* Steps */}
-      <div className="flex flex-col sm:flex-row sm:justify-between px-4 sm:px-16 md:px-24 lg:px-32 gap-12 sm:gap-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between px-4 sm:px-12 md:px-16 lg:px-24 gap-8 sm:gap-4">
         {features.map((feature, index) => (
           <div key={index} className="flex flex-col items-center text-center sm:flex-1">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 mb-4 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 text-[#1B1B1B]">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 mb-3 bg-[#F5F5F5] rounded-xl flex items-center justify-center">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 text-[#1B1B1B]">
                 {feature.icon}
               </div>
             </div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">{feature.title}</h3>
-            <p className="text-sm sm:text-base text-[#757575]">{feature.description}</p>
+            <h3 className="text-base sm:text-lg font-semibold mb-1">{feature.title}</h3>
+            <p className="text-xs sm:text-sm text-[#757575]">{feature.description}</p>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-6 sm:mt-8 px-4">
         <Button
           variant="secondary"
           onClick={() => navigate('/airport-selection')}
