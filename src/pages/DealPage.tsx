@@ -189,7 +189,7 @@ export default function DealPage() {
                   rel="noopener noreferrer"
                   className="flex-1"
                 >
-                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3 px-6 rounded-lg transition-colors">
+                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors">
                     Book Now
                   </button>
                 </a>
@@ -201,7 +201,7 @@ export default function DealPage() {
                       url: window.location.href
                     }).catch(console.error);
                   }}
-                  className="bg-white hover:bg-gray-50 border border-gray-200 p-3 rounded-lg transition-colors"
+                  className="bg-white hover:bg-gray-50 border border-gray-200 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
                 >
                   <Share className="w-5 h-5" />
                 </button>
