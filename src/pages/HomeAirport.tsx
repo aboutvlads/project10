@@ -90,7 +90,8 @@ const airports: Airport[] = [
     code: 'VIE',
     name: 'Vienna International Airport',
     city: 'Vienna',
-    country: 'Austria'
+    country: 'Austria',
+    popular: true
   },
   {
     code: 'WAW',
@@ -99,16 +100,40 @@ const airports: Airport[] = [
     country: 'Poland'
   },
   {
-    code: 'BRU',
-    name: 'Brussels Airport',
-    city: 'Brussels',
-    country: 'Belgium'
+    code: 'BER',
+    name: 'Berlin Brandenburg Airport',
+    city: 'Berlin',
+    country: 'Germany'
+  },
+  {
+    code: 'PRG',
+    name: 'Václav Havel Airport Prague',
+    city: 'Prague',
+    country: 'Czech Republic'
+  },
+  {
+    code: 'BUD',
+    name: 'Budapest Ferenc Liszt International Airport',
+    city: 'Budapest',
+    country: 'Hungary'
+  },
+  {
+    code: 'ZRH',
+    name: 'Zurich Airport',
+    city: 'Zurich',
+    country: 'Switzerland'
   },
   {
     code: 'LIS',
     name: 'Humberto Delgado Airport',
     city: 'Lisbon',
     country: 'Portugal'
+  },
+  {
+    code: 'OSL',
+    name: 'Oslo Airport, Gardermoen',
+    city: 'Oslo',
+    country: 'Norway'
   },
   {
     code: 'ARN',
@@ -123,16 +148,28 @@ const airports: Airport[] = [
     country: 'Finland'
   },
   {
-    code: 'OSL',
-    name: 'Oslo Airport, Gardermoen',
-    city: 'Oslo',
-    country: 'Norway'
-  },
-  {
     code: 'ATH',
     name: 'Athens International Airport',
     city: 'Athens',
     country: 'Greece'
+  },
+  {
+    code: 'BRU',
+    name: 'Brussels Airport',
+    city: 'Brussels',
+    country: 'Belgium'
+  },
+  {
+    code: 'MXP',
+    name: 'Milan Malpensa Airport',
+    city: 'Milan',
+    country: 'Italy'
+  },
+  {
+    code: 'OTP',
+    name: 'Henri Coandă International Airport',
+    city: 'Bucharest',
+    country: 'Romania'
   }
 ];
 
