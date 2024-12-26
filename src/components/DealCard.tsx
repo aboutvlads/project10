@@ -119,13 +119,12 @@ export default function DealCard({
           </div>
         </div>
 
-        <div className="space-y-1 text-sm text-gray-600 mb-3">
-          <div>From: {departure}</div>
-          <div className="flex items-center gap-2">
-            <span className="capitalize">{trip_type}</span>
-            <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-            <span>{stops}</span>
-          </div>
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+          <span>{departure}</span>
+          <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+          <span className="capitalize">{trip_type}</span>
+          <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+          <span>{stops}</span>
         </div>
 
         <div className="flex items-center justify-between text-xs text-gray-500">
