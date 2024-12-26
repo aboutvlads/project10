@@ -10,7 +10,6 @@ interface Deal {
   country: string;
   flag: string;
   departure: string;
-  stops: string;
   trip_type: 'oneway' | 'roundtrip';
   cabin_type: string;
   price: number;
@@ -147,8 +146,8 @@ export default function DealPage() {
                   <span className="ml-2 capitalize">{deal.trip_type}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <span className="font-medium">Stops:</span>
-                  <span className="ml-2">{deal.stops}</span>
+                  <span className="font-medium">Duration:</span>
+                  <span className="ml-2">{deal.flight_duration}</span>
                 </div>
               </div>
               <div className="space-y-2">
@@ -161,8 +160,8 @@ export default function DealPage() {
                   <span className="ml-2">{deal.arrival_time}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <span className="font-medium">Duration:</span>
-                  <span className="ml-2">{deal.flight_duration}</span>
+                  <span className="font-medium">Cabin:</span>
+                  <span className="ml-2">{deal.cabin_type}</span>
                 </div>
               </div>
             </div>
