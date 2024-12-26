@@ -109,8 +109,7 @@ export default function DealPage() {
                   </div>
                   {deal.stops && (
                     <div className="flex items-center">
-                      <span className="font-medium">Stops:</span>
-                      <span className="ml-1">{deal.stops}</span>
+                      <span>{deal.stops}</span>
                     </div>
                   )}
                 </div>

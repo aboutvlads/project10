@@ -112,8 +112,7 @@ export default function DealCard({
                 </span>
                 {stops && (
                   <span className="mt-0.5 flex items-center">
-                    <span className="font-medium">Stops:</span>
-                    <span className="ml-1">{stops}</span>
+                    <span>{stops}</span>
                   </span>
                 )}
               </div>
