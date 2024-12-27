@@ -36,6 +36,7 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      {/* Temporarily hidden
       <Route
         path="/airport-selection"
         element={
@@ -44,6 +45,7 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      */}
       <Route
         path="/home-airport"
         element={

@@ -58,7 +58,7 @@ export default function HowItWorks() {
       <div className="flex justify-center mt-8 mb-6">
         <Button
           variant="secondary"
-          onClick={() => navigate('/airport-selection')}
+          onClick={() => navigate('/home-airport')}
           className="w-full sm:w-auto max-w-xs text-base py-2 px-6"
         >
           Continue <ArrowRight className="w-4 h-4 ml-2" />
