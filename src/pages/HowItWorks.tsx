@@ -33,35 +33,35 @@ export default function HowItWorks() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center pt-16 p-4">
       <div className="flex flex-col items-center px-4 sm:px-8 pt-12">
-        <h1 className="text-2xl sm:text-4xl font-bold text-center mb-4">
+        <h1 className="text-xl sm:text-3xl font-bold text-center mb-3">
           How it works
         </h1>
-        <p className="text-base sm:text-lg text-[#757575] text-center max-w-3xl mb-12">
+        <p className="text-sm sm:text-base text-[#757575] text-center max-w-2xl mb-8">
           We keep a close eye on prices from your airport to destinations all over the world.
           When we find new deals, you know.
         </p>
 
         {/* Steps */}
-        <div className="flex flex-col sm:flex-row sm:justify-between w-full px-4 sm:px-16 md:px-32 lg:px-48 gap-12 sm:gap-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between w-full px-4 sm:px-12 md:px-24 lg:px-36 gap-8 sm:gap-6">
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-center sm:flex-1">
-              <div className="w-20 h-20 sm:w-28 sm:h-28 mb-6 bg-[#F5F5F5] rounded-xl sm:rounded-2xl flex items-center justify-center p-6 sm:p-9">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mb-4 bg-[#F5F5F5] rounded-lg sm:rounded-xl flex items-center justify-center p-4 sm:p-6">
                 {feature.icon}
               </div>
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-base sm:text-lg text-[#757575] max-w-sm">{feature.description}</p>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-sm sm:text-base text-[#757575] max-w-xs">{feature.description}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex justify-center mt-12 mb-8">
+      <div className="flex justify-center mt-8 mb-6">
         <Button
           variant="secondary"
           onClick={() => navigate('/airport-selection')}
-          className="w-full sm:w-auto max-w-xs text-lg py-3 px-8"
+          className="w-full sm:w-auto max-w-xs text-base py-2 px-6"
         >
-          Continue <ArrowRight className="w-5 h-5 ml-2" />
+          Continue <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </div>
