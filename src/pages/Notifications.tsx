@@ -107,29 +107,34 @@ export default function Notifications() {
             {
               id: 'push',
               icon: Bell,
-              title: 'Push Notifications',
-              description: 'Instant alerts when new deals match your preferences'
+              title: 'Push Notifications (Coming Soon)',
+              description: 'Instant alerts when new deals match your preferences',
+              disabled: true
             },
             {
               id: 'sms',
               icon: Phone,
-              title: 'SMS Alerts',
-              description: 'Get text messages for time-sensitive deals'
+              title: 'SMS Alerts (Coming Soon)',
+              description: 'Get text messages for time-sensitive deals',
+              disabled: true
             }
-          ].map(({ id, icon: Icon, title, description }) => (
+          ].map(({ id, icon: Icon, title, description, disabled }) => (
             <button
               key={id}
-              onClick={() => setPreferences(prev => ({
+              onClick={() => !disabled && setPreferences(prev => ({
                 ...prev,
                 [id]: !prev[id as keyof typeof prev]
               }))}
+              disabled={disabled}
               className={`w-full p-4 rounded-xl border-2 transition-colors text-left flex items-center gap-4 ${
+                disabled ? 'opacity-50 cursor-not-allowed border-[#E5E5E5]' :
                 preferences[id as keyof typeof preferences]
                   ? 'border-[#1B1B1B] bg-[#F5F5F5]'
                   : 'border-[#E5E5E5] hover:border-[#1B1B1B]'
               }`}
             >
               <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                disabled ? 'bg-[#F5F5F5] text-[#757575]' :
                 preferences[id as keyof typeof preferences]
                   ? 'bg-[#1B1B1B] text-white'
                   : 'bg-[#F5F5F5] text-[#1B1B1B]'

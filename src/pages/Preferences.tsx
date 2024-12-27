@@ -75,7 +75,7 @@ const destinations: Destination[] = [
     id: 'capetown',
     name: 'Cape Town',
     description: 'Dramatic coastlines and mountain vistas',
-    image: 'https://images.unsplash.com/photo-1641325547688-16810956c293?w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&auto=format&fit=crop',
     region: 'Africa'
   }
 ];
