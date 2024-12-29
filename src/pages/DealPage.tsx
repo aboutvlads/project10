@@ -30,6 +30,7 @@ interface Deal {
   sample_dates?: string;
   deal_screenshot_url?: string;
   trip_type: string;
+  route?: string;
 }
 
 export default function DealPage() {
@@ -162,6 +163,18 @@ export default function DealPage() {
                     alt="Deal Screenshot"
                     className="w-full rounded-lg shadow-md"
                   />
+                </div>
+              )}
+
+              {/* Route */}
+              {deal.route && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Route</h2>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-600">
+                      {deal.route}
+                    </p>
+                  </div>
                 </div>
               )}
 
