@@ -240,6 +240,11 @@ export default function DealPage() {
                   <Share className="w-6 h-6" />
                 </button>
               </div>
+
+              {/* Disclaimer */}
+              <p className="text-sm text-gray-500 mt-4 italic">
+                Important: The details on this page were accurate when published. However, if you're reviewing this deal at a later time, the price and availability might have changed. Please be aware that prices can change.
+              </p>
             </div>
           </div>
         </div>
