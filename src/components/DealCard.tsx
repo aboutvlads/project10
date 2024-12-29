@@ -109,7 +109,7 @@ export default function DealCard({
             <span className="text-xs font-medium">Hot Deal</span>
           </div>
         )}
-        <div className="absolute bottom-3 right-3 bg-[#fdf567] text-[#1B1B1B] px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm font-medium">
+        <div className="absolute bottom-3 right-3 bg-[#fdf567] text-[#1B1B1B] px-2 py-1 rounded-full text-xs font-medium">
           {discountPercent}% OFF
         </div>
       </div>
