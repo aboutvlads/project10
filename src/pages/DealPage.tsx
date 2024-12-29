@@ -31,6 +31,7 @@ interface Deal {
   deal_screenshot_url?: string;
   trip_type: string;
   route?: string;
+  baggage_allowance?: string;
 }
 
 export default function DealPage() {
@@ -154,18 +155,6 @@ export default function DealPage() {
                 </div>
               )}
 
-              {/* Deal Screenshot */}
-              {deal.deal_screenshot_url && (
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">Deal Screenshot</h2>
-                  <img
-                    src={deal.deal_screenshot_url}
-                    alt="Deal Screenshot"
-                    className="w-full rounded-lg shadow-md"
-                  />
-                </div>
-              )}
-
               {/* Route */}
               {deal.route && (
                 <div>
@@ -175,6 +164,30 @@ export default function DealPage() {
                       {deal.route}
                     </p>
                   </div>
+                </div>
+              )}
+
+              {/* Baggage Allowance */}
+              {deal.baggage_allowance && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Baggage Allowance</h2>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-600">
+                      {deal.baggage_allowance}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Deal Screenshot */}
+              {deal.deal_screenshot_url && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Deal Screenshot</h2>
+                  <img
+                    src={deal.deal_screenshot_url}
+                    alt="Deal Screenshot"
+                    className="w-full rounded-lg shadow-md"
+                  />
                 </div>
               )}
 
