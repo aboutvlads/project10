@@ -42,7 +42,7 @@ export default function Header() {
             <img
               src="https://cdn.prod.website-files.com/675c4bb1a6111f64bc92535b/675c4ff2a1636ad4ee500785_Untitled%20design%20(1).svg"
               alt="Tripwingz"
-              className="h-12 sm:h-16 w-auto"
+              className="h-11 sm:h-14 w-auto"
             />
           </a>
 
