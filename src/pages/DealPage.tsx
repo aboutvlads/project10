@@ -136,8 +136,8 @@ export default function DealPage() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">€{deal.price}</p>
-                <p className="text-2xl text-gray-400 line-through">€{deal.original_price}</p>
+                <p className="text-2xl sm:text-4xl font-bold">€{deal.price}</p>
+                <p className="text-sm sm:text-base text-gray-400 line-through">€{deal.original_price}</p>
               </div>
             </div>
 
