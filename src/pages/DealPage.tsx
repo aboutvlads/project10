@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ArrowLeft, Clock, Share, Flame, Heart } from 'lucide-react';
+import { ArrowLeft, Clock, Share, Flame, Heart, ArrowRight } from 'lucide-react';
 import Button from '../components/Button';
 
 interface Deal {
@@ -223,8 +223,9 @@ export default function DealPage() {
                   rel="noopener noreferrer"
                   className="flex-1"
                 >
-                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors">
-                    Book Now
+                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2">
+                    Book On Google Flights
+                    <ArrowRight className="w-5 h-5" />
                   </button>
                 </a>
                 <button
@@ -235,19 +236,12 @@ export default function DealPage() {
                       url: window.location.href
                     }).catch(console.error);
                   }}
-                  className="p-3.5 border border-gray-200 hover:bg-gray-50 rounded-full transition-colors"
+                  className="bg-gray-100 hover:bg-gray-200 rounded-full w-14 h-14 flex items-center justify-center transition-colors"
                 >
                   <Share className="w-6 h-6" />
                 </button>
               </div>
             </div>
-          </div>
-
-          {/* Disclaimer */}
-          <div className="border-t border-gray-100 mt-6 pt-4 pb-4">
-            <p className="text-sm text-gray-500 italic text-center px-4">
-              Important: The details on this page were accurate when published. However, if you're reviewing this deal at a later time, the price and availability might have changed. Please be aware that prices can change.
-            </p>
           </div>
         </div>
       </div>
