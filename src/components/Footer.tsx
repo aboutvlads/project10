@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between w-full">
             <div className="mb-4 sm:mb-0">
               <div className="text-sm text-[#757575]">
-                © Tripwingz. All Rights Reserved.
+                &copy; Tripwingz. All Rights Reserved.
               </div>
             </div>
             
@@ -26,7 +26,7 @@ export default function Footer() {
                 href="https://www.facebook.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#FFE978] transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#fdf567] transition-colors"
               >
                 <Facebook className="w-4 h-4 text-[#1B1B1B]" />
               </a>
@@ -34,7 +34,7 @@ export default function Footer() {
                 href="https://twitter.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#FFE978] transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#fdf567] transition-colors"
               >
                 <Twitter className="w-4 h-4 text-[#1B1B1B]" />
               </a>
@@ -42,7 +42,7 @@ export default function Footer() {
                 href="https://www.instagram.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#FFE978] transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F8F8F8] hover:bg-[#fdf567] transition-colors"
               >
                 <Instagram className="w-4 h-4 text-[#1B1B1B]" />
               </a>

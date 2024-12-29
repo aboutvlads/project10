@@ -223,7 +223,7 @@ export default function DealPage() {
                   rel="noopener noreferrer"
                   className="flex-1"
                 >
-                  <button className="w-full bg-[#FFE978] hover:bg-[#FFE045] text-black font-semibold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2">
+                  <button className="w-full bg-[#fdf567] hover:bg-[#e6dc5d] text-black font-semibold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2">
                     Book On Google Flights
                     <ArrowRight className="w-5 h-5" />
                   </button>

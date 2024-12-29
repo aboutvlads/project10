@@ -2,7 +2,7 @@
 export const colors = {
   primary: '#1B1B1B',      // Text and primary elements
   secondary: '#757575',    // Secondary text
-  accent: '#FFE978',      // Yellow accent
+  accent: '#fdf567',      // Yellow accent
   background: '#FFFFFF',   // Pure white background
   surface: '#F8F8F8',     // Light gray surface
   border: '#E5E5E5',      // Light border
