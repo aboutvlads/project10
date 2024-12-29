@@ -150,8 +150,8 @@ export default function Preferences() {
                 className={`
                   relative rounded-lg sm:rounded-xl overflow-hidden cursor-pointer group transition-transform duration-300 hover:scale-[1.02]
                   ${selectedDestinations.includes(destination.id)
-                    ? 'ring-2 sm:ring-4 ring-[#1B1B1B] shadow-md sm:shadow-xl'
-                    : 'hover:ring-2 hover:ring-[#1B1B1B] hover:shadow-lg'
+                    ? 'ring-2 sm:ring-4 ring-[#fdf567] shadow-md sm:shadow-xl'
+                    : 'hover:ring-2 hover:ring-[#fdf567] hover:shadow-lg'
                   }
                 `}
               >
